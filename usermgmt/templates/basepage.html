@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{% static 'notif.css' %}" />
+</head>
+
+<body>
+<div class="header">
+<p class="username">{% if user.first_name or user.last_name %}
+{{ user.first_name }} {{ user.last_name }}
+{% else %}
+{{ user.username }}
+{% endif %}</p>
+<h1>N&#x014d;tifs</h1>
+<h2>{% block subtitle %}{% endblock %}</h2>
+<table class="navigation"><tr>
+  <td><a href="{% url 'notif' %}">Notifications</a></td>
+  <td><a href="{% url 'auth' %}">Authorizations</a></td>
+  <td><a href="{% url 'rules' %}">Rules</a></td>
+  <td><a href="{% url 'methods' %}">Methods</a></td>
+  <td><a href="{% url 'settings' %}">Settings</a></td></tr></table>
+</div>
+{% block middle %}{% endblock %}
+
+
+</body> </html>

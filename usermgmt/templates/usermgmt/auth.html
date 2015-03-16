@@ -1,0 +1,33 @@
+{% extends "basepage.html" %}
+{% block title %}Authorizations{% endblock %}
+{% block subtitle %}Your Authorizations{% endblock %}
+
+{% block middle %}
+{% if authorization_list %}
+<table class="summary">
+  <tr class="header">
+    <th width="280">Name</th>
+    <th width="200">Domain</th>
+    <th width="100">Max Priority</th>
+    <th width="250">Latest Notification</th>
+    <th width="70">Active</td></th>
+  {% for authorization in authorization_list %}
+  <tr>
+    <td><a href="{% url 'auth' %}{{ authorization.address }}">{{ authorization.description }}</a></td>
+    <td>{{ authorization.domain }}</td>
+    <!-- TODO: This is really ugly. Find a better way to do this. -->
+    <td>{% for pri, priname in priority_choices %}
+          {% if pri == authorization.maxpri %} {{ priname }}{% endif %}
+          {% endfor %}</td>
+    <td>{{ authorization.latest }}</td>
+    <td>{% if authorization.active %}Active{% else %}Inactive{% endif %}</td>
+  </tr>
+  {% endfor %}
+  </table>
+{% else %}
+  <p>No authorizations found.</p>
+{% endif %}
+<form name="auth_new" action={% url 'authnew' %} method="get">
+  <input type="submit" name="New" value="New">
+  </form>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "basepage.html" %}
+{% block title %}Notifications{% endblock %}
+{% block subtitle %}Your Unread Notifications{% endblock %}
+
+{% block middle %}
+
+{% if notification_list %}
+<table class="summary">
+  <tr class="header">
+    <th width="280">Subject</th>
+    <th width="200">From</th>
+    <th width="100">Priority</th>
+    <th width="250">Date/Time</th></tr>
+  {% for notification in notification_list %}
+  <tr>
+    <td>{% if notification.notID %}
+      <a href="{% url 'notif' %}{{ notification.notID }}">{{ notification.subject }}</a>
+      {% else %}{{ notification.subject }}{% endif %}</td>
+    <td>{% if notification.description %}
+      <a href="{% url 'auth' %}{{ notification.to }}">{{ notification.description }}</a>
+      {% endif %}</td>
+    <!-- TODO: This is really ugly. Find a better way to do this. -->
+    <td>{% for pri, priname in priority_choices %}
+          {% if pri == notification.priority %} {{ priname }}{% endif %}
+          {% endfor %}</td>
+    <td>{{ notification.origtime }}</td>
+  </tr>
+  {% endfor %}
+  </table>
+{% else %}
+  <p>No notifications found.</p>
+{% endif %}
+
+{% endblock %}

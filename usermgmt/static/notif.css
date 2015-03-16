@@ -1,0 +1,72 @@
+/* Notification dashboard styles */
+
+body {
+     margin: 10px;
+     padding: 0;
+     font-size: 12px;
+     font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+     }
+
+button#delete {
+    background:#ff0000;
+    }
+
+h1 {
+    font-size: 36px;
+    color: #274673;
+    text-align: left;
+    margin: 10px;
+    width: 200px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+}
+
+h2 {
+    font-size: 18px;
+    color: #383f22;
+    text-align: center;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+}
+
+div.header {
+    margin: 10px;
+    background-color: #85c8f5;
+    width: 900px;
+}
+
+p.username {
+    margin: 10px;
+    font-size: 12px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    float: right;
+}
+
+table.navigation {
+    margin: 10px;
+    border-width: 0px;
+    width: 900px;
+    table-layout: fixed;
+    text-align: center;
+    }
+
+table.summary {
+    margin: 10px;
+    background-color: #bdc965;
+    border-width: 1px;
+    border-style: solid;
+    width: 900px;
+    }
+
+tr.header {
+    background-color: #f4e2ca;
+    font-weight: bold;
+    color: #383f22
+    }
+
+ul.errorlist {
+    font-size: 12px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    color: #ff0000;
+    margin-top: 0px;
+    padding-top: 0px;
+    }
+

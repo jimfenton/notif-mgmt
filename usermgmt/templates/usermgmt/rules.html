@@ -1,0 +1,31 @@
+{% extends "basepage.html" %}
+{% block title %}Rules{% endblock %}
+{% block subtitle %}Notification Rules{% endblock %}
+
+{% block middle %}
+<form method="post" action="">
+{% csrf_token %}
+  <table class="summary">
+  {{ formset.management_form }}
+    <tr class="header">
+      <th width="80">Active</th>
+      <th width="100">Priority</th>
+      <th width="160">Domain</th>
+      <th width="100">Category</th>
+      <th width="160">Method</th>
+      <th width="80">Delete</th></tr>
+      {% for form in formset %}
+        <tr>{{ form.id }}
+          <td valign="top" align="center">{{ form.active }}</td>
+	  <td valign="top" align="center">{{ form.priority }}{{ form.priority.errors }}</td>
+	  <td valign="top" align="center">{{ form.domain }}{{ form.domain.errors }}</td>
+	  <td valign="top" align="center">{{ form.category }}{{ form.category.errors }}</td>
+	  <td valign="top" align="center">{{ form.method }}{{ form.method.errors }}</td>
+	  <td valign="top" align="center">{{ form.DELETE }}</td></tr>
+	{% endfor %}
+      </table>
+      <input type="submit" name="Update" value="Update">
+      <input type="submit" name="Cancel" value="Cancel">
+
+      </form>
+{% endblock %}

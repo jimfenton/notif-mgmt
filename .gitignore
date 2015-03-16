@@ -1,0 +1,4 @@
+manage.py
+notif/*.pyc
+usermgmt/*.pyc
+*.pyc
