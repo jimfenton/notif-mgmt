@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.db import models
 from django.forms import ModelForm, Textarea
 from django.forms.models import modelformset_factory
@@ -113,6 +114,15 @@ def authcreate(request):
         a.save()
         return a
 
+def home(request):
+    template = loader.get_template('usermgmt/home.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))
+
+def dologout(request):
+    logout(request)
+    return home(request)
+    
 @login_required
 def notif(request):
     notification_list = Notification.objects.exclude(read=True).order_by('priority')

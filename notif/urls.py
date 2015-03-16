@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'notif.views.home', name='home'),
+url(r'^$', views.home, name='home'),
     # url(r'^notif/', include('notif.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^settings', views.settings, name='settings'),
     url(r'^methods', views.methods, name='methods'),
     url(r'^rules', views.rules, name='rules'),
+    url(r'^logout', views.dologout, name='logout'),
 )
