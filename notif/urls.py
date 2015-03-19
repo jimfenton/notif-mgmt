@@ -15,6 +15,8 @@ url(r'^$', views.home, name='home'),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    url('^', include('django.contrib.auth.urls')),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^auth', include('usermgmt.auth-urls')),
     url(r'^notif', include('usermgmt.notif-urls')),
     url(r'^settings', views.settings, name='settings'),

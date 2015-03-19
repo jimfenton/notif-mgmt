@@ -7,15 +7,19 @@
 
 <body>
 <div class="header">
-<p class="username">{% if user.first_name or user.last_name %}
-{{ user.first_name }} {{ user.last_name }}
-{% else %}
-{{ user.username }}
+{% if user.is_active %}
+  <p class="username">
+  {% if user.first_name or user.last_name %}
+    {{ user.first_name }} {{ user.last_name }}
+  {% else %}
+    {{ user.username }}
   {% endif %}
   <br />
   <a href="{% url 'logout' %}">Logout</a></p>
-<h1>N&#x014d;tifs</h1>
-<h2>{% block subtitle %}{% endblock %}</h2>
+{% endif %}
+  <h1>N&#x014d;tifs</h1>
+  <h2>{% block subtitle %}{% endblock %}</h2>
+{% if user.is_active %}
 <table class="navigation"><tr>
   <td><a href="{% url 'notif' %}">Notifications</a></td>
   <td><a href="{% url 'auth' %}">Authorizations</a></td>
@@ -23,6 +27,7 @@
   <td><a href="{% url 'methods' %}">Methods</a></td>
   <td><a href="{% url 'settings' %}">Settings</a></td></tr></table>
 </div>
+{% endif %}
 {% block middle %}{% endblock %}
 
 
