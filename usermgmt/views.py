@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.core.exceptions import SuspiciousOperation
 from django.db import models
 from django.forms import ModelForm, Textarea
 from django.forms.models import modelformset_factory
@@ -80,12 +81,29 @@ def authupdate(request, address):
             return a
 
 @login_required
-def authnew(request):
+def authorize(request):
+    name = ""
+    domain = ""
+    maxpri = 3
+    redirect = ""
+
     if (request.method == "POST"):
-        authorization = authcreate(request)
-        return HttpResponseRedirect(authorization.address)
-    return render(request, 'usermgmt/authnew.html', {
-        'priority_choices': Priority.PRIORITY_CHOICES })
+        if "name" in request.POST:
+            name = request.POST['name']
+        if "maxpri" in request.POST:
+            maxpri = request.POST['maxpri']
+        if "domain" not in request.POST:
+            raise SuspiciousOperation
+        domain = request.POST['domain']
+        if "redirect" not in request.POST:
+            raise SuspiciousOperation
+
+    return render(request,'usermgmt/authnew.html', {
+            'name': name,
+            'domain': domain,
+            'maxpri': maxpri,
+            'redirect': redirect,
+            'priority_choices': Priority.PRIORITY_CHOICES })
 
 @login_required
 def authcreate(request):
@@ -93,12 +111,9 @@ def authcreate(request):
         name = request.POST['description']
         domain = request.POST['domain']
         maxpri = request.POST['maxpri']
-        if 'active' in request.POST:
-            active = True
-        else:
-            active = False
 # TODO: This render has problems, doesn't work.
     except (KeyError):
+        raise SuspiciousOperation("Missing POST parameter")
         return render(request,'usermgmt/authdetail.html', {
             'authorization': Null,
             'priority_choices': Authorization.PRIORITY_CHOICES,
@@ -110,9 +125,14 @@ def authcreate(request):
                           domain=domain,
                           description=name,
                           maxpri=maxpri,
-                          active=active)
+                          active=True)
         a.save()
-        return a
+        callback = ""
+        if "callback" in request.POST:
+            callback = request.POST['callback']
+        if callback == "":
+            return HttpResponseRedirect(a.address)
+        return HttpResponseRedirect(request.POST['callback']+"?authid="+a.address+"&maxpri="+maxpri)
 
 def home(request):
     template = loader.get_template('usermgmt/home.html')

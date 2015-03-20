@@ -27,7 +27,7 @@
 {% else %}
   <p>No authorizations found.</p>
 {% endif %}
-<form name="auth_new" action={% url 'authnew' %} method="get">
-  <input type="submit" name="New" value="New">
+<form name="auth_new" action={% url 'authorize' %} method="get">
+  <input type="submit" value="New">
   </form>
 {% endblock %}
