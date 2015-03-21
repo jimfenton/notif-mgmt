@@ -12,14 +12,16 @@
     default="{{ name }}" size="30" /></td></tr>
   <tr><td>Domain</td><td>
       {% if domain == "" %}<input type="text" name="domain" size="30" />
-      {% else %}{{ domain }}{% endif %}</td></tr>
-  <tr><td>Max Priority</td><td> {{ authorization.maxpri }}<select name="maxpri">
+    {% else %}{{ domain }}
+    <input type="hidden" name="domain" value="{{ domain }}"/>{% endif %}</td></tr>
+  <tr><td>Max Priority</td><td>-{{ maxpri }}-<select name="maxpri">
     {% for pri, priname in priority_choices %}
-    <option value="{{ pri }}"{% if pri == maxpri %} selected{% endif %}>{{ priname }}</option>
+    <option value="{{ pri }}"{% if pri == maxpri %} selected="selected"{% endif %}>-{{pri}}-{{ priname }}</option>
     {% endfor %}
      </select>
-</table>
-<input type="hidden" name="callback" value="{{ callback }}"/>
+   </table>
+
+<input type="hidden" name="redirect" value="{{ redirect }}"/>
   <br />
   <input type="submit" value="Create">
   </form>

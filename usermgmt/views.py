@@ -10,6 +10,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from usermgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
 import uuid
 
@@ -81,6 +82,7 @@ def authupdate(request, address):
             return a
 
 @login_required
+@csrf_exempt
 def authorize(request):
     name = ""
     domain = ""
@@ -102,8 +104,9 @@ def authorize(request):
             'name': name,
             'domain': domain,
             'maxpri': maxpri,
-            'redirect': redirect,
+            'redirect': request.POST['redirect'],
             'priority_choices': Priority.PRIORITY_CHOICES })
+
 
 @login_required
 def authcreate(request):
@@ -111,14 +114,8 @@ def authcreate(request):
         name = request.POST['description']
         domain = request.POST['domain']
         maxpri = request.POST['maxpri']
-# TODO: This render has problems, doesn't work.
     except (KeyError):
         raise SuspiciousOperation("Missing POST parameter")
-        return render(request,'usermgmt/authdetail.html', {
-            'authorization': Null,
-            'priority_choices': Authorization.PRIORITY_CHOICES,
-            'errormessage': "Something went wrong...",
-            })
     else:
         a = Authorization(user=request.user,
                           address=str(uuid.uuid4()),
@@ -127,12 +124,12 @@ def authcreate(request):
                           maxpri=maxpri,
                           active=True)
         a.save()
-        callback = ""
-        if "callback" in request.POST:
-            callback = request.POST['callback']
-        if callback == "":
+        redirect = ""
+        if "redirect" in request.POST:
+            redirect = request.POST['redirect']
+        if redirect == "":
             return HttpResponseRedirect(a.address)
-        return HttpResponseRedirect(request.POST['callback']+"?authid="+a.address+"&maxpri="+maxpri)
+        return HttpResponseRedirect(request.POST['redirect']+"?authid="+a.address+"&maxpri="+maxpri)
 
 def home(request):
     template = loader.get_template('usermgmt/home.html')
