@@ -22,7 +22,6 @@
     {% if authorization.count != 0 %}{{ authorization.latest }}
     {% endif %}</td></tr>
   <tr><td>Authorized since</td><td>{{ authorization.created }}</td></tr>
-  <!--<tr><td>Expires</td><td>{{ authorization.expiration }}</td></tr>-->
   <tr><td>Active</td><td><input type="checkbox" name="active"
     {% if authorization.active %} checked {% endif %}></td></tr>
   </table>

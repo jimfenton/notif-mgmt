@@ -69,5 +69,9 @@ ul.errorlist {
     color: #ff0000;
     margin-top: 0px;
     padding-top: 0px;
-    }
+}
+
+.center {
+    text=align: center;
+}
 

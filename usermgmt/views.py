@@ -14,6 +14,9 @@ from django.views.decorators.csrf import csrf_exempt
 from usermgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
 import uuid
 
+# TODO: Need a much better place to specify this!
+NOTIF_HOST = "altmode.net:5342"
+
 class SettingsForm(ModelForm):
     class Meta:
         model = Userext
@@ -103,7 +106,7 @@ def authorize(request):
     return render(request,'usermgmt/authnew.html', {
             'name': name,
             'domain': domain,
-            'maxpri': maxpri,
+            'maxpri': int(maxpri),
             'redirect': request.POST['redirect'],
             'priority_choices': Priority.PRIORITY_CHOICES })
 
@@ -117,6 +120,8 @@ def authcreate(request):
     except (KeyError):
         raise SuspiciousOperation("Missing POST parameter")
     else:
+        if name=="":
+            name="[unnamed]"
         a = Authorization(user=request.user,
                           address=str(uuid.uuid4()),
                           domain=domain,
@@ -129,7 +134,7 @@ def authcreate(request):
             redirect = request.POST['redirect']
         if redirect == "":
             return HttpResponseRedirect(a.address)
-        return HttpResponseRedirect(request.POST['redirect']+"?authid="+a.address+"&maxpri="+maxpri)
+        return HttpResponseRedirect(request.POST['redirect']+"?addr="+a.address+"@"+NOTIF_HOST+"&maxpri="+maxpri)
 
 def home(request):
     template = loader.get_template('usermgmt/home.html')

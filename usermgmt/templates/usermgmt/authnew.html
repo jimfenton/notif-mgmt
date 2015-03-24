@@ -14,9 +14,9 @@
       {% if domain == "" %}<input type="text" name="domain" size="30" />
     {% else %}{{ domain }}
     <input type="hidden" name="domain" value="{{ domain }}"/>{% endif %}</td></tr>
-  <tr><td>Max Priority</td><td>-{{ maxpri }}-<select name="maxpri">
+  <tr><td>Max Priority</td><td><select name="maxpri">
     {% for pri, priname in priority_choices %}
-    <option value="{{ pri }}"{% if pri == maxpri %} selected="selected"{% endif %}>-{{pri}}-{{ priname }}</option>
+    <option value="{{ pri }}"{% if pri == maxpri %} selected{% endif %}>{{ priname }}</option>
     {% endfor %}
      </select>
    </table>
