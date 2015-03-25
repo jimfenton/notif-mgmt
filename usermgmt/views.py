@@ -20,7 +20,10 @@ NOTIF_HOST = "altmode.net:5342"
 class SettingsForm(ModelForm):
     class Meta:
         model = Userext
-        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token']
+        widgets = {
+            'twilio_token': forms.PasswordInput(render_value=True),
+            }
+        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token', 'twilio_from']
 
 class MethodForm(ModelForm):
     class Meta:
@@ -210,6 +213,7 @@ def settings(request):
             settings.email_security = form.cleaned_data['email_security']
             settings.twilio_sid = form.cleaned_data['twilio_sid']
             settings.twilio_token = form.cleaned_data['twilio_token']
+            settings.twilio_from = form.cleaned_data['twilio_from']
             settings.save()
             return HttpResponseRedirect("/settings")
 

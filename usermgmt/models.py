@@ -38,6 +38,7 @@ class Userext(models.Model):
     email_security = models.IntegerField(choices=SEC_CHOICES, default=SEC_STARTTLS)
     twilio_sid = models.CharField(max_length=34)
     twilio_token = models.CharField(max_length=34)
+    twilio_from = models.CharField(max_length=20)
     count = models.IntegerField(default=0)
     latest = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
