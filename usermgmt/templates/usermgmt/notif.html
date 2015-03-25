@@ -20,7 +20,7 @@
       <a href="{% url 'auth' %}{{ notification.to }}">{{ notification.description }}</a>
       {% endif %}</td>
     <!-- TODO: This is really ugly. Find a better way to do this. -->
-    <td>{% for pri, priname in priority_choices %}
+    <td class="center">{% for pri, priname in priority_choices %}
           {% if pri == notification.priority %} {{ priname }}{% endif %}
           {% endfor %}</td>
     <td>{{ notification.origtime }}</td>

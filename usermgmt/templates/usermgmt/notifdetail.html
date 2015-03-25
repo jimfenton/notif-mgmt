@@ -17,7 +17,8 @@
       {% if pri == notification.priority %}{{ priname }}{% endif %}
     {% endfor %}
 
-  <tr><td>Read</td><td><input type="checkbox" name="read"
+  <tr><td>Update count</td><td>{{ notification.revcount }}</td></tr>
+    <tr><td>Read</td><td><input type="checkbox" name="read"
     {% if notification.read %} checked {% endif %}></td></tr>
   <!--<tr><td>Expires</td><td>{{ authorization.expiration }}</td></tr>-->
   <tr><td>Body</td><td>{{ notification.body }}</td></tr>
