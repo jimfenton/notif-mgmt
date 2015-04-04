@@ -26,9 +26,13 @@
     {% if authorization.active %} checked {% endif %}></td></tr>
   </table>
   <br />
-  <input type="submit" name="Update" value="Update">
-  <input type="submit" name="Delete" value="Delete">
+  {% if authorization.deleted %}
+  <p class="warning">Authorization has been deleted</p>
+  {% else %}
+    <input type="submit" name="Update" value="Update">
+    <input type="submit" name="Delete" value="Delete">
   </form>
+  {% endif %}
 {% else %}
   <p>Authorization not found.</p>
 {% endif %}

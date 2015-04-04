@@ -105,12 +105,13 @@ def authorize(request):
         domain = request.POST['domain']
         if "redirect" not in request.POST:
             raise SuspiciousOperation
+        redirect = request.POST['redirect']
 
     return render(request,'usermgmt/authnew.html', {
             'name': name,
             'domain': domain,
             'maxpri': int(maxpri),
-            'redirect': request.POST['redirect'],
+            'redirect': redirect,
             'priority_choices': Priority.PRIORITY_CHOICES })
 
 
