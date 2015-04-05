@@ -1,4 +1,5 @@
 manage.py
 notif/*.pyc
 usermgmt/*.pyc
+usermgmt/static/foundation
 *.pyc

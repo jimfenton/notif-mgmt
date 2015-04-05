@@ -1,6 +1,6 @@
 {% extends "basepage.html" %}
 {% block title %}Authorizations{% endblock %}
-{% block subtitle %}Your Authorizations{% endblock %}
+{% block subtitle %}Authorizations{% endblock %}
 
 {% block middle %}
 {% if authorization_list %}
@@ -28,6 +28,6 @@
   <p>No authorizations found.</p>
 {% endif %}
 <form name="auth_new" action={% url 'authorize' %} method="get">
-  <input type="submit" value="New">
+  <input type="submit" class="button" value="New">
   </form>
 {% endblock %}

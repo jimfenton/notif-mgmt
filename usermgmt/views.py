@@ -36,7 +36,9 @@ def auth(request):
     authorization_list = Authorization.objects.filter(user=request.user, deleted=False).order_by('description')
     template = loader.get_template('usermgmt/auth.html')
     context = RequestContext(request, {
-        'authorization_list': authorization_list, 'priority_choices': Priority.PRIORITY_CHOICES
+        'page': 'auth',
+        'authorization_list': authorization_list,
+        'priority_choices': Priority.PRIORITY_CHOICES
         })
     return HttpResponse(template.render(context))
 
@@ -70,6 +72,7 @@ def authupdate(request, address):
 # TODO: This render has problems, doesn't work.
     except (KeyError):
         return render(request,'usermgmt/authdetail.html', {
+            'page': 'auth',
             'authorization': a,
             'priority_choices': Authorization.PRIORITY_CHOICES,
             'errormessage': "Something went wrong...",
@@ -108,6 +111,7 @@ def authorize(request):
         redirect = request.POST['redirect']
 
     return render(request,'usermgmt/authnew.html', {
+            'page': 'auth',
             'name': name,
             'domain': domain,
             'maxpri': int(maxpri),
@@ -155,6 +159,7 @@ def notif(request):
     # above will add .filter(username=request.user.username)
     template = loader.get_template('usermgmt/notif.html')
     context = RequestContext(request, {
+        'page': 'notif',
         'notification_list': notification_list,
         'priority_choices': Priority.PRIORITY_CHOICES
         })
@@ -166,6 +171,7 @@ def notifall(request):
     # above will add .filter(username=request.user.username)
     template = loader.get_template('usermgmt/notifall.html')
     context = RequestContext(request, {
+        'page': 'notif',
         'notification_list': notification_list,
         'priority_choices': Priority.PRIORITY_CHOICES
         })
@@ -190,6 +196,7 @@ def notifdetail(request, notID):
         notification.read = True
         notification.save()
         return render(request, 'usermgmt/notifdetail.html', {
+            'page': '',
             'notification': notification,
             'priority_choices': Priority.PRIORITY_CHOICES })
 
@@ -219,7 +226,7 @@ def settings(request):
             return HttpResponseRedirect("/settings")
 
     form = SettingsForm(instance=settings)
-    return render(request, 'usermgmt/settings.html', { 'form': form, 'settings': settings })
+    return render(request, 'usermgmt/settings.html', { 'page': 'settings', 'form': form, 'settings': settings })
 
 @login_required
 def methods(request):
@@ -246,7 +253,7 @@ def methods(request):
     else:
         formset = MethodFormSet(queryset=Method.objects.filter(user=request.user))
 
-    return render(request, 'usermgmt/methods.html', { 'formset': formset })
+    return render(request, 'usermgmt/methods.html', { 'page': 'methods', 'formset': formset })
 
 @login_required
 def rules(request):
@@ -275,4 +282,4 @@ def rules(request):
     else:
         formset = RuleFormSet(queryset=Rule.objects.filter(user=request.user))
 
-    return render(request, 'usermgmt/rules.html', { 'formset': formset })
+    return render(request, 'usermgmt/rules.html', { 'page': 'rules', 'formset': formset })
