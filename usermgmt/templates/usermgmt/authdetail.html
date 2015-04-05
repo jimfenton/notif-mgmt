@@ -10,7 +10,7 @@
 {% csrf_token %}
 <table style="width:900px">
   <tr><td>Name</td><td><input type="text" name="description" value="{{ authorization.description }}"></td></tr>
-  <tr><td>Domain</td><td><input type="text" name="domain" value="{{ authorization.domain }}"></td></tr>
+  <tr><td>Domain</td><td>{{ authorization.domain }}</td></tr>
   <tr><td>Address</td><td>{{ authorization.address }}</td></tr>
   <tr><td>Max Priority</td><td><select name="maxpri">
     {% for pri, priname in priority_choices %}
@@ -29,8 +29,8 @@
   {% if authorization.deleted %}
   <p class="warning">Authorization has been deleted</p>
   {% else %}
-    <input type="submit" name="Update" value="Update">
-    <input type="submit" name="Delete" value="Delete">
+    <input type="submit" class="small button" name="Update" value="Update">
+    <input type="submit" class="small button" name="Delete" value="Delete">
   </form>
   {% endif %}
 {% else %}
