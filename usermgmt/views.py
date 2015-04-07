@@ -61,34 +61,22 @@ def authdetail(request, address):
 @login_required
 def authupdate(request, address):
     a = get_object_or_404(Authorization, address=address)
-    try:
-        name = request.POST['description']
-        domain = request.POST['domain']
-        maxpri = request.POST['maxpri']
-        if 'active' in request.POST:
-            active = True
-        else:
-            active = False
-# TODO: This render has problems, doesn't work.
-    except (KeyError):
-        return render(request,'usermgmt/authdetail.html', {
-            'page': 'auth',
-            'authorization': a,
-            'priority_choices': Authorization.PRIORITY_CHOICES,
-            'errormessage': "Something went wrong...",
-            })
+    if 'active' in request.POST:
+        a.active = True
     else:
-        a.description = name
-        a.domain = domain
-        a.maxpri = maxpri
-        a.active = active
-        if 'Delete' in request.POST:
-            a.deleted = True
-        a.save()
-        if a.deleted:
-            return None
-        else:
-            return a
+        a.active = False
+    if 'Delete' in request.POST:
+        a.deleted = True
+    else:
+        a.description = request.POST['description']
+        a.domain = domain = request.POST['domain']
+        a.maxpri = request.POST['maxpri']
+
+    a.save()
+    if a.deleted:
+        return None
+    else:
+        return a
 
 @login_required
 @csrf_exempt
