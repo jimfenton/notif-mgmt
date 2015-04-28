@@ -9,7 +9,7 @@
 {% csrf_token %}
 <table style="width:900px">
   <tr><td>Name</td><td><input type="text" name="description"
-    default="{{ name }}" size="30" /></td></tr>
+    value="{{ name }}" size="30" /></td></tr>
   <tr><td>Domain</td><td>
       {% if domain == "" %}<input type="text" name="domain" size="30" />
     {% else %}{{ domain }}
