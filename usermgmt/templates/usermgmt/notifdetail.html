@@ -11,6 +11,7 @@
   <tr><td>From</td><td>{{ notification.description }}</td></tr>
   <tr><td>Subject</td><td>{{ notification.subject }}</td></tr>
   <tr><td>Sent</td><td>{{ notification.origtime }}</td></tr>
+  <tr><td>Expires</td><td>{{ notification.expires }}</td></tr>
   <tr><td>Priority</td><td>
     {% for pri, priname in priority_choices %}
       {% if pri == notification.priority %}{{ priname }}{% endif %}
