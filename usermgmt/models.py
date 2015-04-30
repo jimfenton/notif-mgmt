@@ -43,6 +43,9 @@ class Userext(models.Model):
     latest = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = "userext"
+
     
 
 class Priority(models.Model):
@@ -57,31 +60,6 @@ class Priority(models.Model):
         (INFORMATIONAL, 'Informational'),
         )
 
-class Category(models.Model):
-    OFFICIAL = 1
-    INVITATION = 2
-    ADVERTISING = 3
-    FINANCIAL = 4
-    NEWSLETTER = 5
-    ALARM = 6
-    ADMINISTRATIVE = 7
-    SUPPORT = 8
-    SECURITY = 9
-    POLL = 10
-    VERIFICATION = 11
-    CATEGORY_CHOICES = (
-        (OFFICIAL, 'Official'),
-        (INVITATION, 'Invitation'),
-        (ADVERTISING, 'Advertisement'),
-        (FINANCIAL, 'Financial'),
-        (NEWSLETTER, 'Newsletter'),
-        (ALARM, 'Alarm'),
-        (ADMINISTRATIVE, 'Administrative'),
-        (SUPPORT, 'Support'),
-        (SECURITY, 'Security'),
-        (POLL, 'Survey'),
-        (VERIFICATION, 'Verification'),
-        )
 
 class Authorization(models.Model):
     user = models.ForeignKey(User)
@@ -95,6 +73,9 @@ class Authorization(models.Model):
     active = models.BooleanField(default=True)
     expiration = models.DateTimeField(null=True) # Currently unimplemented, for future use
     deleted = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "authorization"
     
     def __unicode__(self):
         return self.address
@@ -105,7 +86,6 @@ class Notification(models.Model):
     description = models.CharField(max_length=64)
     origtime = models.DateTimeField()
     priority = models.IntegerField(choices=Priority.PRIORITY_CHOICES, default=Priority.ROUTINE)
-    category = models.IntegerField(null=True) # temporarily may be null
     fromdomain = models.CharField(max_length=64)
     expires = models.DateTimeField(null=True) # temporarily may be null (?)
     subject = models.CharField(max_length=80)
@@ -117,6 +97,9 @@ class Notification(models.Model):
     readtime = models.DateTimeField(null=True) #maybe not so temporary
     source = models.CharField(max_length=80)
     deleted = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "notification"
 
     def __unicode__(self):
         if (self.notID == None):
@@ -140,6 +123,9 @@ class Method(models.Model):
     address = models.CharField(max_length=32)
     preamble = models.CharField(max_length=64, blank=True, null=True)
 
+    class Meta:
+        db_table = "method"
+
     def __unicode__(self):
         return self.name
 
@@ -161,13 +147,14 @@ class Rule(models.Model):
         (PARAMETER_PRIORITYGE, 'Priority >='),
         (PARAMETER_PRIORITYGT, 'Priority >'),
         (PARAMETER_DOMAIN, 'Domain'),
-        (PARAMETER_CATEGORY, 'Category'),
         )
 
     user = models.ForeignKey(User, editable=False)
     active = models.BooleanField(default=False)
     priority = models.IntegerField(choices=Priority.PRIORITY_CHOICES, blank=True)
     domain = models.CharField(max_length=64, blank=True)
-    category = models.IntegerField(choices=Category.CATEGORY_CHOICES, blank=True)
 # TODO: Make sure methods don't bleed from one user to another
     method = models.ForeignKey(Method)
+
+    class Meta:
+        db_table = "rule"
