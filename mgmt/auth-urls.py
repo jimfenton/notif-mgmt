@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from usermgmt import views
+from mgmt import views
 
 urlpatterns = patterns('',
     url(r'^$', views.auth, name='auth'),

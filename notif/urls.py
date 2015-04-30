@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from usermgmt import views
+from mgmt import views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,8 +18,8 @@ url(r'^$', views.home, name='home'),
     url('^', include('django.contrib.auth.urls')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^authorize', views.authorize, name='authorize'),
-    url(r'^auth', include('usermgmt.auth-urls')),
-    url(r'^notif', include('usermgmt.notif-urls')),
+    url(r'^auth', include('mgmt.auth-urls')),
+    url(r'^notif', include('mgmt.notif-urls')),
     url(r'^settings', views.settings, name='settings'),
     url(r'^methods', views.methods, name='methods'),
     url(r'^rules', views.rules, name='rules'),

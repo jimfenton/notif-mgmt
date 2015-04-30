@@ -34,7 +34,7 @@ from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from usermgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
+from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
 import uuid
 
 # TODO: Need a much better place to specify this!
@@ -57,7 +57,7 @@ class MethodForm(ModelForm):
 @login_required
 def auth(request):
     authorization_list = Authorization.objects.filter(user=request.user, deleted=False).order_by('description')
-    template = loader.get_template('usermgmt/auth.html')
+    template = loader.get_template('mgmt/auth.html')
     context = RequestContext(request, {
         'page': 'auth',
         'authorization_list': authorization_list,
@@ -77,7 +77,7 @@ def authdetail(request, address):
             if (authorization == None):       #Means authorization was deleted
                 return HttpResponseRedirect("/auth")
             return HttpResponseRedirect(authorization.address)
-        return render(request, 'usermgmt/authdetail.html', {
+        return render(request, 'mgmt/authdetail.html', {
             'authorization': authorization,
             'priority_choices': Priority.PRIORITY_CHOICES })
 
@@ -121,7 +121,7 @@ def authorize(request):
             raise SuspiciousOperation
         redirect = request.POST['redirect']
 
-    return render(request,'usermgmt/authnew.html', {
+    return render(request,'mgmt/authnew.html', {
             'page': 'auth',
             'name': name,
             'domain': domain,
@@ -156,7 +156,7 @@ def authcreate(request):
         return HttpResponseRedirect(request.POST['redirect']+"?addr="+a.address+"@"+NOTIF_HOST+"&maxpri="+maxpri)
 
 def home(request):
-    template = loader.get_template('usermgmt/home.html')
+    template = loader.get_template('mgmt/home.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))
 
@@ -168,7 +168,7 @@ def dologout(request):
 def notif(request):
     notification_list = Notification.objects.exclude(read=True).order_by('priority')
     # above will add .filter(username=request.user.username)
-    template = loader.get_template('usermgmt/notif.html')
+    template = loader.get_template('mgmt/notif.html')
     context = RequestContext(request, {
         'page': 'notif',
         'notification_list': notification_list,
@@ -180,7 +180,7 @@ def notif(request):
 def notifall(request):
     notification_list = Notification.objects.order_by('priority')
     # above will add .filter(username=request.user.username)
-    template = loader.get_template('usermgmt/notifall.html')
+    template = loader.get_template('mgmt/notifall.html')
     context = RequestContext(request, {
         'page': 'notif',
         'notification_list': notification_list,
@@ -206,7 +206,7 @@ def notifdetail(request, notID):
             return HttpResponseRedirect("/notif")
         notification.read = True
         notification.save()
-        return render(request, 'usermgmt/notifdetail.html', {
+        return render(request, 'mgmt/notifdetail.html', {
             'page': '',
             'notification': notification,
             'priority_choices': Priority.PRIORITY_CHOICES })
@@ -237,7 +237,7 @@ def settings(request):
             return HttpResponseRedirect("/settings")
 
     form = SettingsForm(instance=settings)
-    return render(request, 'usermgmt/settings.html', { 'page': 'settings', 'form': form, 'settings': settings })
+    return render(request, 'mgmt/settings.html', { 'page': 'settings', 'form': form, 'settings': settings })
 
 @login_required
 def methods(request):
@@ -264,7 +264,7 @@ def methods(request):
     else:
         formset = MethodFormSet(queryset=Method.objects.filter(user=request.user))
 
-    return render(request, 'usermgmt/methods.html', { 'page': 'methods', 'formset': formset })
+    return render(request, 'mgmt/methods.html', { 'page': 'methods', 'formset': formset })
 
 @login_required
 def rules(request):
@@ -293,4 +293,4 @@ def rules(request):
     else:
         formset = RuleFormSet(queryset=Rule.objects.filter(user=request.user))
 
-    return render(request, 'usermgmt/rules.html', { 'page': 'rules', 'formset': formset })
+    return render(request, 'mgmt/rules.html', { 'page': 'rules', 'formset': formset })
