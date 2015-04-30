@@ -1,0 +1,5 @@
+manage.py
+notif/*.pyc
+mgmt/*.pyc
+mgmt/static/foundation
+*.pyc

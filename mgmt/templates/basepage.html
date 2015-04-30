@@ -1,0 +1,58 @@
+{% load staticfiles %}
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'foundation/css/foundation.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app.css' %}"/>
+<script src="{% static 'foundation/js/vendor/modernizr.js' %}"></script>
+</head>
+
+<body>
+<div class="row">
+
+{% if user.is_active %}
+</div>
+<div class="row">
+  <nav class="top-bar" data-topbar role="navigation">
+  <ul class="title-area">
+    <li class="name">
+    <h1><a href="#">N&#x014d;tifs</a></h1>
+    <li>
+  </ul>
+
+  <section class="top-bar-section">
+  <ul class="right">
+    <li class="has-dropdown"><a href="#">{% if user.first_name or user.last_name %}
+    {{ user.first_name }} {{ user.last_name }}
+  {% else %}
+    {{ user.username }}
+  {% endif %}
+</a>
+    <ul class="dropdown">
+      <li><a href="#">Logout</a></li>
+    </ul>
+  </li>
+</ul>
+
+<ul class="left">
+  <li{% if page == 'notif' %} class="active"{% endif %}><a href="{% url 'notif' %}">Notifications</a></li>
+  <li{% if page == 'auth' %} class="active"{% endif %}><a href="{% url 'auth' %}">Authorizations</a></li>
+  <li{% if page == 'rules' %} class="active"{% endif %}><a href="{% url 'rules' %}">Rules</a></li>
+  <li{% if page == 'methods' %} class="active"{% endif %}><a href="{% url 'methods' %}">Methods</a></li>
+  <li{% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">Settings</a></li>
+</ul>
+</section>
+</nav>
+  
+</div>
+<div class="row">
+  <h3>{% block subtitle %}{% endblock %}</h3>
+</div>
+{% endif %}
+<div class="row">
+{% block middle %}{% endblock %}
+</div>
+<script src="{% static 'foundation/js/vendor/jquery.js' %}"></script>
+<script src="{% static 'foundation/js/vendor/fastclick.js' %}"></script>
+<script src="{% static 'foundation/js/foundation.min.js' %}"></script>
+</body> </html>

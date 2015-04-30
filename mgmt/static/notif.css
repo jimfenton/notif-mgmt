@@ -1,0 +1,82 @@
+/* Notification dashboard styles */
+
+body {
+     margin: 10px;
+     padding: 0;
+     font-size: 12px;
+     color: #262729;
+     font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+     }
+
+button#delete {
+    background:#ff0000;
+    }
+
+h1 {
+    font-size: 36px;
+    color: #274673;
+    text-align: left;
+    margin: 10px;
+    width: 200px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+}
+
+h2 {
+    font-size: 18px;
+    color: #68725a;
+    text-align: center;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+}
+
+div.header {
+    margin: 10px;
+    background-color: #f3f5f4;
+    width: 900px;
+}
+
+p.username {
+    margin: 10px;
+    font-size: 12px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    float: right;
+}
+
+p.warning {
+    color: #ff0000;
+    font-size: 16px;
+}
+
+table.navigation {
+    margin: 10px;
+    border-width: 0px;
+    width: 900px;
+    table-layout: fixed;
+    text-align: center;
+    }
+
+table.summary {
+    margin: 10px;
+    background-color: #a0d0f4;
+    border-width: 1px;
+    border-style: solid;
+    width: 900px;
+    }
+
+tr.header {
+    background-color: #78acdc;
+    font-weight: bold;
+    color: #383f22
+    }
+
+ul.errorlist {
+    font-size: 12px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    color: #ff0000;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+.center {
+    text-align: center;
+}
+
