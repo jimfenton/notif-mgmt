@@ -92,7 +92,6 @@ def authupdate(request, address):
         a.deleted = True
     else:
         a.description = request.POST['description']
-        a.domain = domain = request.POST['domain']
         a.maxpri = request.POST['maxpri']
 
     a.save()
