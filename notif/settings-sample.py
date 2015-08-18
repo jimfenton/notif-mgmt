@@ -5,7 +5,6 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
-    ('Jim Fenton', 'fenton@bluepopcorn.net'),
 )
 
 MANAGERS = ADMINS
@@ -17,7 +16,7 @@ DATABASES = {
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': 'altmode.net',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
         'OPTIONS' : {
             'tz_aware' : True
@@ -27,7 +26,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['altmode.net']
+ALLOWED_HOSTS = ['example.net']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -39,7 +38,7 @@ TIME_ZONE = 'America/Los_Angeles'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = u'53fa38ea3126daf2df72c5db'
+SITE_ID = "set by Django installation"
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -69,7 +68,7 @@ STATIC_ROOT = '/var/www/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = 'http://altmode.net/static/'
+STATIC_URL = 'http://example.net/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
