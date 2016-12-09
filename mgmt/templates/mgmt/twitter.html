@@ -1,0 +1,44 @@
+{% extends "basepage.html" %}
+{% block title %}Twitter filters{% endblock %}
+{% block subtitle %}Twitter filters{% endblock %}
+
+{% block middle %}
+{% if filter_list %}
+<table class="summary">
+  <tr class="header">
+    <th width="100">&nbsp</th>
+    <th width="150">Type</th>
+    <th width="200">Source</th>
+    <th width="200">Keyword</th>
+    <th width="110">Priority</th>
+    <th width="70">Method</th>
+    <th width="70">Active</th>
+  {% for filter in filter_list %}
+  <tr>
+    <td><a href="{% url 'twitter' %}{{ filter.id }}">Edit</a></td>
+    <!-- TODO: This is really ugly. Find a better way to do this. -->
+    <td class="center">{% for type, typename in filter_types %}
+          {% if type == filter.type %} {{ typename }}{% endif %}
+      {% endfor %}</td>
+    <td>{{ filter.source }}</td>
+    <td>{{ filter.keyword }}</td>
+    <!-- TODO: This is really ugly. Find a better way to do this. -->
+    <td class="center">{% for pri, priname in priority_choices %}
+          {% if pri == filter.priority %} {{ priname }}{% endif %}
+      {% endfor %}</td>
+      <td class="center">{% for method in method_list %}
+      {% if filter.method == method.id %} {{ method.name }}{% endif %}
+      {% endfor %}</td>
+    <td class="center">{% if filter.active %}Active{% else %}Inactive{% endif %}</td>
+    <td class="center">{% if filter.deleted %}Deleted{% endif %}</td>
+
+  {% endfor %}
+  </table>
+{% else %}
+  <p>No Twitter filters found.</p>
+{% endif %}
+  
+<form name="filter_new" action={% url 'twittercreate' %} method="get">
+  <input type="submit" class="small button" value="New">
+  </form>
+{% endblock %}

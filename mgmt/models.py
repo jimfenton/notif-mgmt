@@ -35,9 +35,8 @@ class Userext(models.Model):
     email_port = models.IntegerField(default=587)
     email_authentication = models.IntegerField(choices=AUTH_CHOICES, default=AUTH_ENCRPASS)
     email_security = models.IntegerField(choices=SEC_CHOICES, default=SEC_STARTTLS)
-    twilio_sid = models.CharField(max_length=34)
-    twilio_token = models.CharField(max_length=34)
-    twilio_from = models.CharField(max_length=20)
+    twitter_token = models.CharField(max_length=50)
+    twitter_token_secret = models.CharField(max_length=45)
     count = models.IntegerField(default=0)
     latest = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -45,7 +44,17 @@ class Userext(models.Model):
     class Meta:
         db_table = "userext"
 
-    
+class Site(models.Model):
+    site_id = models.IntegerField(default=1)   #For possible future expansion
+    twilio_sid = models.CharField(max_length=34)
+    twilio_token = models.CharField(max_length=34)
+    twilio_from = models.CharField(max_length=20)
+    twitter_key = models.CharField(max_length=25)
+    twitter_secret = models.CharField(max_length=40)
+
+    class Meta:
+        db_table = "site"
+
 
 class Priority(models.Model):
     EMERGENCY = 1
@@ -157,3 +166,33 @@ class Rule(models.Model):
 
     class Meta:
         db_table = "rule"
+
+class Twitter(models.Model):
+
+    TWEET = 0
+    DIRECT = 1
+    RETWEET = 2
+    MENTION = 3
+
+    CHOICES = (
+        (TWEET, 'Tweet'),
+        (DIRECT, 'Direct Message'),
+        (RETWEET, 'Retweet'),
+        (MENTION, 'Mention'),
+        )
+
+
+    user = models.ForeignKey(User, editable=False)
+    type = models.IntegerField(choices=CHOICES, blank=True)    
+    source = models.CharField(max_length=64, blank=True)
+    keyword = models.CharField(max_length=64, blank=True)
+    priority = models.IntegerField(choices=Priority.PRIORITY_CHOICES, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    latest = models.DateTimeField(null=True)
+    count = models.IntegerField(default=0)
+    active = models.BooleanField(default=True)
+    deleted = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "twitter"
+

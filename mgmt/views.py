@@ -34,7 +34,7 @@ from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
+from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule, Site, Twitter
 import uuid
 
 # TODO: Need a much better place to specify this!
@@ -44,9 +44,18 @@ class SettingsForm(ModelForm):
     class Meta:
         model = Userext
         widgets = {
-            'twilio_token': forms.PasswordInput(render_value=True),
+            'twitter_token_secret': forms.PasswordInput(render_value=True),
             }
-        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token', 'twilio_from']
+        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twitter_token', 'twitter_token_secret']
+
+class SiteForm(ModelForm):
+    class Meta:
+        model = Site
+        widgets = {
+            'twilio_token': forms.PasswordInput(render_value=True),
+            'twitter_secret': forms.PasswordInput(render_value=True),
+            }
+        fields = ['twilio_sid', 'twilio_token', 'twilio_from', 'twitter_key', 'twitter_secret']
 
 class MethodForm(ModelForm):
     class Meta:
@@ -225,14 +234,41 @@ def settings(request):
             settings.email_port = form.cleaned_data['email_port']
             settings.email_authentication = form.cleaned_data['email_authentication']
             settings.email_security = form.cleaned_data['email_security']
-            settings.twilio_sid = form.cleaned_data['twilio_sid']
-            settings.twilio_token = form.cleaned_data['twilio_token']
-            settings.twilio_from = form.cleaned_data['twilio_from']
+            settings.twitter_token = form.cleaned_data['twitter_token']
+            settings.twitter_token_secret = form.cleaned_data['twitter_token_secret']
             settings.save()
             return HttpResponseRedirect("/settings")
 
     form = SettingsForm(instance=settings)
     return render(request, 'mgmt/settings.html', { 'page': 'settings', 'form': form, 'settings': settings })
+
+#TODO: Make accessible to admins only
+@login_required
+def sitesettings(request):
+    try:
+        settings = Site.objects.get(site_id = 1)
+    except Site.DoesNotExist:
+# Create a site settings record. Should only happen at first startup
+        settings = Site()
+        settings.save()
+
+
+    else:
+        if (request.method == "POST"):
+
+            form = SiteForm(request.POST)
+            setings.twilio_sid = form.cleaned_data['twilio_sid']
+            settings.twilio_token = form.cleaned_data['twilio_token']
+            settings.twilio_from = form.cleaned_data['twilio_from']
+            settings.twitter_key = form.cleaned_data['twitter_key']
+            settings.twitter_secret = form.cleaned_data['twitter_secret']
+            settings.save()
+            return HttpResponseRedirect("/sitesettings")
+            
+    form = SiteForm(instance=settings)
+    return render(request, 'mgmt/sitesettings.html', { 'page': 'sitesettings', 'form': form })
+                
+
 
 @login_required
 def methods(request):
@@ -286,3 +322,97 @@ def rules(request):
         formset = RuleFormSet(queryset=Rule.objects.filter(user=request.user))
 
     return render(request, 'mgmt/rules.html', { 'page': 'rules', 'formset': formset })
+
+@login_required
+def twitter(request):
+            
+    filter_list = Twitter.objects.filter(user=request.user, deleted=False).order_by('source')
+    template = loader.get_template('mgmt/twitter.html')
+    method_list = Method.objects.filter(user=request.user)
+    
+    context = RequestContext(request, {
+        'page': 'twitter',
+        'filter_list': filter_list,
+        'filter_types': Twitter.CHOICES,
+        'priority_choices': Priority.PRIORITY_CHOICES,
+        'method_list': method_list,
+        })
+    return HttpResponse(template.render(context))
+
+@login_required
+def twitterdetail(request, address):
+    try:
+        filter = Twitter.objects.get(id=address)
+    except Twitter.DoesNotExist:
+        raise Http404
+    else:
+        if (request.method == "POST"):
+            filter = twitterupdate(request, address)
+            if (filter == None):       #Means filter was deleted
+                return HttpResponseRedirect("/twitter")
+            return HttpResponseRedirect("/twitter/"+address)
+        return render(request, 'mgmt/twitterdetail.html', {
+            'filter': filter,
+            'filterid': address,
+            'type_choices': Twitter.CHOICES,
+            'priority_choices': Priority.PRIORITY_CHOICES })
+
+@login_required
+def twitterupdate(request, address):
+    filter = get_object_or_404(Twitter, id=address)
+    if 'active' in request.POST:
+        filter.active = True
+    else:
+        filter.active = False
+    if 'Delete' in request.POST:
+        filter.deleted = True
+    else:
+        filter.type = request.POST['type']
+        filter.source = request.POST['source']
+        filter.keyword = request.POST['keyword']
+        filter.priority = request.POST['priority']
+
+    filter.save()
+    if filter.deleted:
+        return None
+    else:
+        return filter
+
+
+@login_required
+def twittercreate(request):
+    if (request.method == "POST"):
+        try:
+            type = request.POST['type']
+            source = request.POST['source']
+            keyword = request.POST['keyword']
+            priority = request.POST['priority']
+        except (KeyError):
+            raise SuspiciousOperation("Missing POST parameter")
+        else:
+            filter = Twitter(user=request.user,
+                        type = type,
+                        source = source,
+                        keyword = keyword,
+                        priority = priority)
+            if (source == "" and keyword == ""):
+                return render(request, 'mgmt/twitternew.html', {
+                    'filter': filter,
+                    'filter_types': Twitter.CHOICES,
+                    'priority_choices': Priority.PRIORITY_CHOICES,
+                    'message': 'Source and keyword cannot both be blank'})
+
+            filter.save()
+            return twitter(request)
+
+
+    filter = Twitter(user=request.user,
+                        type = Twitter.TWEET,
+                        source = "",
+                        keyword = "",
+                        priority = Priority.ROUTINE)
+
+    return render(request, 'mgmt/twitternew.html', {
+                    'filter': filter,
+                    'filter_types': Twitter.CHOICES,
+                    'priority_choices': Priority.PRIORITY_CHOICES})

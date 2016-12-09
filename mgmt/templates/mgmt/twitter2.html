@@ -1,0 +1,37 @@
+{% extends "basepage.html" %}
+{% block title %}Twitter filters{% endblock %}
+{% block subtitle %}Twitter filters{% endblock %}
+
+{% block middle %}
+{% if twitter_list %}
+<table class="summary">
+  <tr class="header">
+    <th width="100"></th>
+    <th width="200">Type</th>
+    <th width="200">Source</th>
+    <th width="200">Keyword</th>
+    <th width="110">Priority</th>
+    <th width="200">Rule</th>
+    <th width="70">Active</th>
+  {% for filter in twitter_list %}
+    <tr>
+      <td><a href="{% url 'twitter' %}{{ filter._id }}">Edit</a></td>
+      <td>{{ filter.type }}</td> <!-- TODO: Need to be cleaned up -->
+    <td>{{ filter.source }}</td>
+    <td>{{ filter.keyword }}</td>
+    <!-- TODO: This is really ugly. Find a better way to do this. -->
+    <td class="center">{% for pri, priname in priority_choices %}
+          {% if pri == filter.priority %} {{ priname }}{% endif %}
+          {% endfor %}</td>
+    <td>{{ filter.rule }}</td> <!-- TODO: Probably doesn't work -->
+    <td class="center">{% if filter.active %}Active{% else %}Inactive{% endif %}</td>
+  </tr>
+  {% endfor %}
+  </table>
+{% else %}
+  <p>No Twitter filters found.</p>
+{% endif %}
+<form name="twitter_new" action={% url 'twitternew' %} method="get">
+  <input type="submit" class="small button" value="New">
+  </form>
+{% endblock %}
