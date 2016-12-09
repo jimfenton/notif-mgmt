@@ -37,8 +37,11 @@
 <ul class="left">
   <li{% if page == 'notif' %} class="active"{% endif %}><a href="{% url 'notif' %}">Notifications</a></li>
   <li{% if page == 'auth' %} class="active"{% endif %}><a href="{% url 'auth' %}">Authorizations</a></li>
-  <li{% if page == 'rules' %} class="active"{% endif %}><a href="{% url 'rules' %}">Rules</a></li>
-  <li{% if page == 'methods' %} class="active"{% endif %}><a href="{% url 'methods' %}">Methods</a></li>
+  <li class="has-dropdown"><a href="#">Alerts</a>
+  <ul class="dropdown">
+    <li{% if page == 'rules' %} class="active"{% endif %}><a href="{% url 'rules' %}">Rules</a></li>
+    <li{% if page == 'methods' %} class="active"{% endif %}><a href="{% url 'methods' %}">Methods</a></li>
+    </ul></li>
   <li{% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">Settings</a></li>
 </ul>
 </section>
@@ -55,4 +58,7 @@
 <script src="{% static 'foundation/js/vendor/jquery.js' %}"></script>
 <script src="{% static 'foundation/js/vendor/fastclick.js' %}"></script>
 <script src="{% static 'foundation/js/foundation.min.js' %}"></script>
+<script>
+$(document).foundation();
+</script>
 </body> </html>

@@ -1,4 +1,4 @@
-#N&#x014d;tifs Notifier Management
+#N&#x014d;tifs Agent Management
 
 `notif-mgmt` is a Python/Django-based Web application for managing a
 user's notifications, authorizations, and rules and methods for user
@@ -7,10 +7,11 @@ works alongside the
 [notif-agent](https://github.com/jimfenton/notif-agent) package, which
 runs continuously as a daemon for processing incoming notifications.
 
-This N&#x014d;tifs agent uses the MongoDB database, because a schemaless
-database allows arbitrary-sized notifs and has accommodated seamless
-changes in the format of notifs during the development process. Since
-Django does not natively support MongoDB, this package uses
+This N&#x014d;tifs agent uses the [MongoDB](https://www.mongodb.org/)
+database, because a schemaless database allows arbitrary-sized n&#x014d;tifs
+and accommodates seamless changes in the format of n&#x014d;tifs during
+the development process. Since Django does not natively support
+MongoDB, this package uses
 [django-mongodb-engine](http://django-nonrel.org/), which as the name
 suggests is a fork of Django with MongoDB support.
 
@@ -37,10 +38,15 @@ authorizations, etc.) are thought to be incomplete.
 
 It is assumed that you have some familiarity with Django application
 structure; if not, please refer to the
-[documentation](https://docs.djangoproject.com/en/1.5/). Also refer to the `django-mongodb-engine`
+[documentation](https://docs.djangoproject.com/en/1.5/). Also refer to
+the `django-mongodb-engine`
 [documentation](https://django-mongodb-engine.readthedocs.org/en/latest/)
 for information on installing the required Django fork and supporting
 packages.
+
+The `notif/settings.py` file will need particular attention. It contains
+domain names and the like, but also has site-specific secret values
+that have been removed from the version on the repository.
 
 Note that when running the code in production (with DEBUG turned off
 in the configuration file), it is necessary to move the static files

@@ -92,7 +92,6 @@ def authupdate(request, address):
         a.deleted = True
     else:
         a.description = request.POST['description']
-        a.domain = domain = request.POST['domain']
         a.maxpri = request.POST['maxpri']
 
     a.save()
@@ -283,9 +282,6 @@ def rules(request):
                     if r.priority == '':
                         r.priority = 0
                     r.domain = form.cleaned_data['domain']
-                    r.category = form.cleaned_data['category']
-                    if r.category == '':
-                        r.category = 0
                     r.method = form.cleaned_data['method']
                     r.save()
             return HttpResponseRedirect("rules")
