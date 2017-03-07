@@ -1,6 +1,6 @@
 # views.py - Django views for notification management web interface
 #
-# Copyright (c) 2014, 2015 Jim Fenton
+# Copyright (c) 2014, 2015, 2017 Jim Fenton
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
@@ -31,7 +31,7 @@ from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
-from django.template import RequestContext, loader
+from django.template import loader
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
@@ -58,12 +58,11 @@ class MethodForm(ModelForm):
 def auth(request):
     authorization_list = Authorization.objects.filter(user=request.user, deleted=False).order_by('description')
     template = loader.get_template('mgmt/auth.html')
-    context = RequestContext(request, {
+    return HttpResponse(template.render({
         'page': 'auth',
         'authorization_list': authorization_list,
         'priority_choices': Priority.PRIORITY_CHOICES
-        })
-    return HttpResponse(template.render(context))
+        }, request))
 
 @login_required
 def authdetail(request, address):
@@ -156,8 +155,7 @@ def authcreate(request):
 
 def home(request):
     template = loader.get_template('mgmt/home.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(request))
 
 def dologout(request):
     logout(request)
@@ -168,24 +166,22 @@ def notif(request):
     notification_list = Notification.objects.exclude(read=True).order_by('priority')
     # above will add .filter(username=request.user.username)
     template = loader.get_template('mgmt/notif.html')
-    context = RequestContext(request, {
+    return HttpResponse(template.render({
         'page': 'notif',
         'notification_list': notification_list,
         'priority_choices': Priority.PRIORITY_CHOICES
-        })
-    return HttpResponse(template.render(context))
+        }, request))
 
 @login_required
 def notifall(request):
     notification_list = Notification.objects.order_by('priority')
     # above will add .filter(username=request.user.username)
     template = loader.get_template('mgmt/notifall.html')
-    context = RequestContext(request, {
+    return HttpResponse(template.render({
         'page': 'notif',
         'notification_list': notification_list,
         'priority_choices': Priority.PRIORITY_CHOICES
-        })
-    return HttpResponse(template.render(context))
+        }, request))
 
 @login_required
 def notifdetail(request, notID):
@@ -267,7 +263,7 @@ def methods(request):
 
 @login_required
 def rules(request):
-    RuleFormSet = modelformset_factory(Rule, extra=1, can_delete = True)
+    RuleFormSet = modelformset_factory(Rule, extra=1, exclude=('user',), can_delete = True)
     if (request.method == "POST"):
         formset = RuleFormSet(request.POST, initial=[
             {'user': request.user,}])

@@ -10,7 +10,6 @@
 <body>
 <div class="row">
 
-{% if user.is_active %}
 </div>
 <div class="row">
   <nav class="top-bar" data-topbar role="navigation">
@@ -20,6 +19,7 @@
     <li>
   </ul>
 
+{% if user.is_active %}  
   <section class="top-bar-section">
   <ul class="right">
     <li class="has-dropdown"><a href="#">{% if user.first_name or user.last_name %}
@@ -29,7 +29,7 @@
   {% endif %}
 </a>
     <ul class="dropdown">
-      <li><a href="#">Logout</a></li>
+      <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
   </li>
 </ul>
@@ -45,13 +45,13 @@
   <li{% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">Settings</a></li>
 </ul>
 </section>
+{% endif %}
 </nav>
   
 </div>
 <div class="row">
   <h3>{% block subtitle %}{% endblock %}</h3>
 </div>
-{% endif %}
 <div class="row">
 {% block middle %}{% endblock %}
 </div>
