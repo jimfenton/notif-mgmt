@@ -5,3 +5,6 @@ notif/settings.py
 mgmt/*.pyc
 mgmt/static/foundation
 *.pyc
+db.sqlite3
+mgmt/migrations
+*.bak

@@ -4,14 +4,13 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-# class User(models.Model):
+#class User(AbstractUser):
+#    pass
 #    username = models.CharField(max_length=32)
 #    email = models.CharField(max_length=64)
 #    fullname = models.CharField(max_length=64)
 #    def __unicode__(self):
 #        return self.username
-
-User = get_user_model()
 
 class Userext(models.Model):
     SEC_NONE = 0
