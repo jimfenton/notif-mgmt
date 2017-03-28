@@ -80,8 +80,8 @@ class Authorization(models.Model):
         return self.address
 
 class Notification(models.Model):
-    username = models.CharField(max_length=30, blank=True) # only temporarily may be blank
-    to = models.CharField(max_length=36)
+    userid = models.IntegerField(default=0)
+    toaddr = models.CharField(max_length=36)
     description = models.CharField(max_length=64)
     origtime = models.DateTimeField()
     priority = models.IntegerField(choices=Priority.PRIORITY_CHOICES, default=Priority.ROUTINE)
@@ -89,7 +89,7 @@ class Notification(models.Model):
     expires = models.DateTimeField(null=True) # temporarily may be null (?)
     subject = models.CharField(max_length=80)
     body = models.TextField()
-    notID = models.CharField(max_length=36, unique=True)
+    notid = models.CharField(max_length=36, unique=True)
     recvtime = models.DateTimeField(null=True) #temporarily may be null
     revcount = models.IntegerField(default=0)
     read = models.BooleanField(default=False)

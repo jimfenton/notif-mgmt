@@ -187,7 +187,7 @@ def notifall(request):
 def notifdetail(request, notID):
     
     try:
-        notification = Notification.objects.get(notID=notID)
+        notification = Notification.objects.get(notid=notID)
     except Notification.DoesNotExist:
         raise Http404
     else:
