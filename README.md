@@ -7,27 +7,17 @@ works alongside the
 [notif-agent](https://github.com/jimfenton/notif-agent) package, which
 runs continuously as a daemon for processing incoming notifications.
 
-This N&#x014d;tifs agent uses the [MongoDB](https://www.mongodb.org/)
-database, because a schemaless database allows arbitrary-sized n&#x014d;tifs
-and accommodates seamless changes in the format of n&#x014d;tifs during
-the development process. Since Django does not natively support
-MongoDB, this package uses
-[django-mongodb-engine](http://django-nonrel.org/), which as the name
-suggests is a fork of Django with MongoDB support.
+This N&#x014d;tifs agent uses the [PostgreSQL](https://www.postgresql.org/)
+database. This is a change from earlier versions that had used MongoDB because of the lack of MongoDB support in current, supported versions of Django.
 
-The `notif-management` code has been tested with:
+The `notif-mgmt` code uses and has been tested with:
 
-* Python 2.7
-* Django 1.5.8 (installed as part of django-mongodb)
-* djangotoolbox 1.6.2
-* pymongo 2.7.2
+* Python 2.7.9
+* Django 1.10.4
+* PostgreSQL 9.4.9
+* ZURB [Foundation](http://foundation.zurb.com/) (version uncertain)
 
 ##Caveats
-
-Note that the Django version 1.5.x is somewhat behind the
-current version, due to compatibility requirements of
-`django-mongodb`. This may mean that it is vulnerable to security
-issues that have been corrected in later versions.
 
 This software has not yet been extensively tested for security, and
 should be treated with caution. In particular, the multitenant
@@ -38,11 +28,7 @@ authorizations, etc.) are thought to be incomplete.
 
 It is assumed that you have some familiarity with Django application
 structure; if not, please refer to the
-[documentation](https://docs.djangoproject.com/en/1.5/). Also refer to
-the `django-mongodb-engine`
-[documentation](https://django-mongodb-engine.readthedocs.org/en/latest/)
-for information on installing the required Django fork and supporting
-packages.
+[documentation](https://docs.djangoproject.com/en/1.10/).
 
 The `notif/settings.py` file will need particular attention. It contains
 domain names and the like, but also has site-specific secret values
@@ -51,8 +37,8 @@ that have been removed from the version on the repository.
 Note that when running the code in production (with DEBUG turned off
 in the configuration file), it is necessary to move the static files
 to a separate location, normally hosted directly directly from a web
-server such as Apache or nginx. Reder to the Django
-[Deployment Checklist](https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/)
+server such as Apache or nginx. Refer to the Django
+[Deployment Checklist](https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/)
 for more information on putting the server into production.
 
 
