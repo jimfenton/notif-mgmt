@@ -1,4 +1,4 @@
-#N&#x014d;tifs Agent Management
+# N&#x014d;tifs Agent Management
 
 `notif-mgmt` is a Python/Django-based Web application for managing a
 user's notifications, authorizations, and rules and methods for user
@@ -17,14 +17,14 @@ The `notif-mgmt` code uses and has been tested with:
 * PostgreSQL 9.4.9
 * ZURB [Foundation](http://foundation.zurb.com/) (version uncertain)
 
-##Caveats
+## Caveats
 
 This software has not yet been extensively tested for security, and
 should be treated with caution. In particular, the multitenant
 capabilities (multiple users, each with their own notifications,
 authorizations, etc.) are thought to be incomplete.
 
-##Installation
+## Installation
 
 It is assumed that you have some familiarity with Django application
 structure; if not, please refer to the
