@@ -15,11 +15,11 @@
     <th width="100">Deleted</th></tr>
   {% for notification in notification_list %}
   <tr>
-    <td>{% if notification.notID %}
-      <a href="{% url 'notif' %}{{ notification.notID }}">{{ notification.subject }}</a>
+    <td>{% if notification.notid %}
+      <a href="{% url 'notif' %}{{ notification.notid }}">{{ notification.subject }}</a>
       {% else %}{{ notification.subject }}{% endif %}</td>
     <td>{% if notification.description %}
-      <a href="{% url 'auth' %}{{ notification.to }}">{{ notification.description }}</a>
+      <a href="{% url 'auth' %}{{ notification.toaddr }}">{{ notification.description }}</a>
       {% endif %}</td>
     <!-- TODO: This is really ugly. Find a better way to do this. -->
     <td>{% for pri, priname in priority_choices %}
