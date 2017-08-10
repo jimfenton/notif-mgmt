@@ -55,7 +55,7 @@ class SiteForm(ModelForm):
             'twilio_token': forms.PasswordInput(render_value=True),
             'twitter_secret': forms.PasswordInput(render_value=True),
             }
-        fields = ['twilio_sid', 'twilio_token', 'twilio_from', 'twitter_key', 'twitter_secret']
+        fields = ['twilio_sid', 'twilio_token', 'twilio_from', 'twitter_api_key', 'twitter_api_secret']
 
 class MethodForm(ModelForm):
     class Meta:
