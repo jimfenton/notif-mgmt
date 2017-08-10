@@ -30,13 +30,16 @@ class Userext(models.Model):
         (AUTH_ENCRPASS, 'Encrypted password'),
         )
     user = models.OneToOneField(User)
-    email_username = models.CharField(max_length=64)
-    email_server = models.CharField(max_length=64)
+    email_username = models.CharField(max_length=64, null=True)
+    email_server = models.CharField(max_length=64, null=True)
     email_port = models.IntegerField(default=587)
     email_authentication = models.IntegerField(choices=AUTH_CHOICES, default=AUTH_ENCRPASS)
     email_security = models.IntegerField(choices=SEC_CHOICES, default=SEC_STARTTLS)
-    twitter_token = models.CharField(max_length=50)
-    twitter_token_secret = models.CharField(max_length=45)
+    twilio_sid = models.CharField(max_length=34, null=True)
+    twilio_token = models.CharField(max_length=34, null=True)
+    twilio_from = models.CharField(max_length=20, null=True)
+    twitter_token = models.CharField(max_length=50, null=True) # Does this belong in a Twitter-specific table?
+    twitter_token_secret = models.CharField(max_length=45, null=True) # Ditto
     count = models.IntegerField(default=0)
     latest = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -46,11 +49,11 @@ class Userext(models.Model):
 
 class Site(models.Model):
     site_id = models.IntegerField(default=1)   #For possible future expansion
-    twilio_sid = models.CharField(max_length=34)
-    twilio_token = models.CharField(max_length=34)
-    twilio_from = models.CharField(max_length=20)
-    twitter_key = models.CharField(max_length=25)
-    twitter_secret = models.CharField(max_length=40)
+    twilio_sid = models.CharField(max_length=34, null=True) #Twilio info overridden by user info if present
+    twilio_token = models.CharField(max_length=34, null=True)
+    twilio_from = models.CharField(max_length=20, null=True)
+    twitter_api_key = models.CharField(max_length=25, null=True)
+    twitter_api_secret = models.CharField(max_length=50, null=True)
 
     class Meta:
         db_table = "site"
