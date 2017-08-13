@@ -329,15 +329,13 @@ def twitter(request):
     filter_list = Twitter.objects.filter(user=request.user, deleted=False).order_by('source')
     template = loader.get_template('mgmt/twitter.html')
     method_list = Method.objects.filter(user=request.user)
-    
-    context = RequestContext(request, {
+    return HttpResponse(template.render({
         'page': 'twitter',
         'filter_list': filter_list,
         'filter_types': Twitter.CHOICES,
         'priority_choices': Priority.PRIORITY_CHOICES,
         'method_list': method_list,
-        })
-    return HttpResponse(template.render(context))
+        }, request))
 
 @login_required
 def twitterdetail(request, address):
