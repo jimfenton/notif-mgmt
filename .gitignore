@@ -1,7 +1,6 @@
 manage.py
 nohup.out
-notif/*.pyc
-notif/settings.py
+mgmt/settings.py
 mgmt/*.pyc
 mgmt/static/foundation
 *.pyc
