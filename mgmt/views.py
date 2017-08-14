@@ -34,7 +34,8 @@ from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule, Site, Twitter
+from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule, Site
+from twitter.models import Twitter
 import uuid
 
 # TODO: Need a much better place to specify this!
@@ -327,7 +328,7 @@ def rules(request):
 def twitter(request):
             
     filter_list = Twitter.objects.filter(user=request.user, deleted=False).order_by('source')
-    template = loader.get_template('mgmt/twitter.html')
+    template = loader.get_template('twitter/twitter.html')
     method_list = Method.objects.filter(user=request.user)
     return HttpResponse(template.render({
         'page': 'twitter',
@@ -349,7 +350,7 @@ def twitterdetail(request, address):
             if (filter == None):       #Means filter was deleted
                 return HttpResponseRedirect("/twitter")
             return HttpResponseRedirect("/twitter/"+address)
-        return render(request, 'mgmt/twitterdetail.html', {
+        return render(request, 'twitter/detail.html', {
             'filter': filter,
             'filterid': address,
             'type_choices': Twitter.CHOICES,
@@ -394,7 +395,7 @@ def twittercreate(request):
                         keyword = keyword,
                         priority = priority)
             if (source == "" and keyword == ""):
-                return render(request, 'mgmt/twitternew.html', {
+                return render(request, 'twitter/new.html', {
                     'filter': filter,
                     'filter_types': Twitter.CHOICES,
                     'priority_choices': Priority.PRIORITY_CHOICES,
@@ -410,7 +411,7 @@ def twittercreate(request):
                         keyword = "",
                         priority = Priority.ROUTINE)
 
-    return render(request, 'mgmt/twitternew.html', {
+    return render(request, 'twitter/new.html', {
                     'filter': filter,
                     'filter_types': Twitter.CHOICES,
                     'priority_choices': Priority.PRIORITY_CHOICES})
