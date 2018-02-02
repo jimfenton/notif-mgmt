@@ -23,6 +23,7 @@
 
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth import logout
 from django.core.exceptions import SuspiciousOperation
 from django.db import models
@@ -243,8 +244,8 @@ def settings(request):
     form = SettingsForm(instance=settings)
     return render(request, 'mgmt/settings.html', { 'page': 'settings', 'form': form, 'settings': settings })
 
-#TODO: Make accessible to admins only
 @login_required
+@permission_required('user.is_staff', raise_exception=True)
 def sitesettings(request):
     try:
         settings = Site.objects.get(site_id = 1)
