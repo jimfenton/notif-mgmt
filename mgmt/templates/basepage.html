@@ -36,7 +36,11 @@
 
 <ul class="left">
   <li{% if page == 'notif' %} class="active"{% endif %}><a href="{% url 'notif' %}">Notifications</a></li>
-  <li{% if page == 'auth' %} class="active"{% endif %}><a href="{% url 'auth' %}">Authorizations</a></li>
+  <li class="has-dropdown"><a href="#">Authorizations</a>
+  <ul class="dropdown">
+    <li{% if page == 'auth' %} class="active"{% endif %}><a href="{% url 'auth' %}">Native</a></li>
+    <li{% if page == 'twitter' %} class="active"{% endif %}><a href="{% url 'twitter' %}">Twitter</a></li>
+  </ul></li>
   <li class="has-dropdown"><a href="#">Alerts</a>
   <ul class="dropdown">
     <li{% if page == 'rules' %} class="active"{% endif %}><a href="{% url 'rules' %}">Rules</a></li>
@@ -46,9 +50,8 @@
   <li class="has-dropdown"><a href="#">Settings</a>
   <ul class="dropdown">
     <li{% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">User</a></li>
-    <li{% if page == 'sitesettings' %} class="active"{% endif %}><a
-    href="{% url 'sitesettings' %}">Site</a></li>
-    </ul></li>
+    <li{% if page == 'sitesettings' %} class="active"{% endif %}><a href="{% url 'sitesettings' %}">Site</a></li>
+  </ul></li>
   {% else %}
   <li{% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">Settings</a></li>
     {% endif %}

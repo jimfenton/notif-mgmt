@@ -6,13 +6,15 @@
 {% if filter_list %}
 <table class="summary">
   <tr class="header">
-    <th width="100">&nbsp</th>
-    <th width="150">Type</th>
-    <th width="200">Source</th>
-    <th width="200">Keyword</th>
+    <th width="50">&nbsp</th>
+    <th width="100">Type</th>
+    <th width="150">Source</th>
+    <th width="150">Keyword</th>
     <th width="110">Priority</th>
-    <th width="70">Method</th>
-    <th width="70">Active</th>
+    <th width="110">Lifetime</th>
+    <th width="150">Tag</th>
+    <th width="50">Active</th>
+    
   {% for filter in filter_list %}
   <tr>
     <td><a href="{% url 'twitter' %}{{ filter.id }}">Edit</a></td>
@@ -26,11 +28,11 @@
     <td class="center">{% for pri, priname in priority_choices %}
           {% if pri == filter.priority %} {{ priname }}{% endif %}
       {% endfor %}</td>
-      <td class="center">{% for method in method_list %}
-      {% if filter.method == method.id %} {{ method.name }}{% endif %}
-      {% endfor %}</td>
+      <td class="center">{% for lifetime, lifename in lifetimes %}
+      {% if lifetime == filter.lifetime %} {{ lifename }}{% endif %}
+	{% endfor %}</td>
+	<td>{{ filter.tag }}</td>
     <td class="center">{% if filter.active %}Active{% else %}Inactive{% endif %}</td>
-    <td class="center">{% if filter.deleted %}Deleted{% endif %}</td>
 
   {% endfor %}
   </table>
