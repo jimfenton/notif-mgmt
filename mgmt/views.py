@@ -49,16 +49,16 @@ class SettingsForm(ModelForm):
             'twilio_token': forms.PasswordInput(render_value=True),
             'twitter_api_secret': forms.PasswordInput(render_value=True),
             }
-        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token', 'twilio_from', 'twitter_api_key', 'twitter_api_secret']
+        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token', 'twilio_from', 'twitter_access_token', 'twitter_access_token_secret']
 
 class SiteForm(ModelForm):
     class Meta:
         model = Site
         widgets = {
             'twilio_token': forms.PasswordInput(render_value=True),
-            'twitter_secret': forms.PasswordInput(render_value=True),
+            'twitter_consumer_secret': forms.PasswordInput(render_value=True),
             }
-        fields = ['twilio_sid', 'twilio_token', 'twilio_from', 'twitter_api_key', 'twitter_api_secret']
+        fields = ['twilio_sid', 'twilio_token', 'twilio_from', 'twitter_consumer_key', 'twitter_consumer_secret']
 
 class MethodForm(ModelForm):
     class Meta:
@@ -241,8 +241,8 @@ def settings(request):
                 settings.twilio_from = form.cleaned_data['twilio_from']
                 settings.email_authentication = form.cleaned_data['email_authentication']
                 settings.email_security = form.cleaned_data['email_security']
-                settings.twitter_api_key = form.cleaned_data['twitter_api_key']
-                settings.twitter_api_secret = form.cleaned_data['twitter_api_secret']
+                settings.twitter_access_token = form.cleaned_data['twitter_access_token']
+                settings.twitter_access_token_secret = form.cleaned_data['twitter_access_token_secret']
                 settings.save()
             return HttpResponseRedirect("/settings")
 
@@ -268,8 +268,8 @@ def sitesettings(request):
                 settings.twilio_sid = form.cleaned_data['twilio_sid']
                 settings.twilio_token = form.cleaned_data['twilio_token']
                 settings.twilio_from = form.cleaned_data['twilio_from']
-                settings.twitter_api_key = form.cleaned_data['twitter_api_key']
-                settings.twitter_api_secret = form.cleaned_data['twitter_api_secret']
+                settings.twitter_consumer_key = form.cleaned_data['twitter_consumer_key']
+                settings.twitter_consumer_secret = form.cleaned_data['twitter_consumer_secret']
                 settings.save()
             return HttpResponseRedirect("/sitesettings")
             

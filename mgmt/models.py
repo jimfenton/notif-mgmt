@@ -38,8 +38,8 @@ class Userext(models.Model):
     twilio_sid = models.CharField(max_length=34, null=True)
     twilio_token = models.CharField(max_length=34, null=True)
     twilio_from = models.CharField(max_length=20, null=True)
-    twitter_api_key = models.CharField(max_length=50, null=True) # Does this belong in a Twitter-specific table?
-    twitter_api_secret = models.CharField(max_length=45, null=True) # Ditto
+    twitter_access_token = models.CharField(max_length=50, null=True) # Does this belong in a Twitter-specific table?
+    twitter_access_token_secret = models.CharField(max_length=45, null=True) # Ditto
     count = models.IntegerField(default=0)
     latest = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -52,8 +52,8 @@ class Site(models.Model):
     twilio_sid = models.CharField(max_length=34, null=True) #Twilio info overridden by user info if present
     twilio_token = models.CharField(max_length=34, null=True)
     twilio_from = models.CharField(max_length=20, null=True)
-    twitter_api_key = models.CharField(max_length=25, null=True)
-    twitter_api_secret = models.CharField(max_length=50, null=True)
+    twitter_consumer_key = models.CharField(max_length=25, null=True)
+    twitter_consumer_secret = models.CharField(max_length=50, null=True)
 
     class Meta:
         db_table = "site"
