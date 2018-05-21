@@ -38,6 +38,7 @@ from django.views.decorators.csrf import csrf_exempt
 from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule, Site
 from twitter.models import Twitter
 import uuid
+import datetime
 
 # TODO: Need a much better place to specify this!
 NOTIF_HOST = "altmode.net:5342"
@@ -175,7 +176,7 @@ def dologout(request):
     
 @login_required
 def notif(request):
-    notification_list = Notification.objects.filter(user=request.user).exclude(read=True).order_by('priority')
+    notification_list = Notification.objects.filter(user=request.user, read=False, deleted=False,expires__gte=datetime.datetime.now()).order_by('priority','-origtime')
     # above will add .filter(username=request.user.username)
     template = loader.get_template('mgmt/notif.html')
     return HttpResponse(template.render({
@@ -186,7 +187,7 @@ def notif(request):
 
 @login_required
 def notifall(request):
-    notification_list = Notification.objects.filter(user=request.user).order_by('priority')
+    notification_list = Notification.objects.filter(user=request.user).order_by('priority','-origtime')
     # above will add .filter(username=request.user.username)
     template = loader.get_template('mgmt/notifall.html')
     return HttpResponse(template.render({
