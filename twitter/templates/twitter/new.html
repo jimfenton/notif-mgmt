@@ -20,8 +20,7 @@
   </tr>
   <tr><td>Keyword</td>
   <td><input type="text" name="keyword" value="{{ filter.keyword }}" size="30" />
-  </td>
-  </tr>
+  </td></tr>
   <tr><td>Priority</td>
   <td><select name="priority">
     {% for pri, priname in priority_choices %}
@@ -29,6 +28,15 @@
     {% endfor %}
   </select>
   </td></tr>
+ <tr><td>Lifetime</td><td><select name="lifetime">
+    {% for lifetime, lifename in lifetimes %}
+    <option value="{{ lifetime }}"{% if lifetime == filter.lifetime %} selected{% endif %}>{{ lifename }}</option>
+    {% endfor %}
+  </select></td>
+</tr>  <tr><td>Filter tag</td>
+  <td><input type="text" name="tag" value="{{ filter.tag }}"
+    size="30" />
+    </td></tr>
    </table>
 
 <input type="hidden" name="redirect" value="{{ redirect }}"/>
