@@ -14,10 +14,10 @@ url(r'^$', views.home, name='home'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    # Uncomment the next line to enable the admin (maybe):
+ #   url(r'^admin/', include('admin.site.urls')),
     url('^', include('django.contrib.auth.urls')),
-    url(r'^accounts/login/$', auth_views.login),
+    url(r'^accounts/login/$', auth_views.LoginView.as_view()),
     url(r'^authorize', views.authorize, name='authorize'),
     url(r'^auth/', include('mgmt.auth-urls')),
     url(r'^notif/', include('mgmt.notif-urls')),

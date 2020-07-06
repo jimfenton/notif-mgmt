@@ -36,7 +36,7 @@ class Twitter(models.Model):
         (LIFE_UNLIMITED, 'Unlimited'),
         )
 
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(User, models.CASCADE, editable=False) # Guessing about the ON_DELETE action here
     type = models.IntegerField(choices=CHOICES, blank=True)    
     source = models.CharField(max_length=64, blank=True)
     keyword = models.CharField(max_length=64, blank=True)
