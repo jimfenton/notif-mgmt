@@ -12,9 +12,9 @@ database. This is a change from earlier versions that had used MongoDB because o
 
 The `notif-mgmt` code uses and has been tested with:
 
-* Python 2.7.9
-* Django 1.10.4
-* PostgreSQL 9.4.9
+* Python 3.7.3
+* Django 3.0.7
+* PostgreSQL 11.7
 * ZURB [Foundation](http://foundation.zurb.com/) (version uncertain)
 
 ## Caveats
@@ -28,7 +28,7 @@ authorizations, etc.) are thought to be incomplete.
 
 It is assumed that you have some familiarity with Django application
 structure; if not, please refer to the
-[documentation](https://docs.djangoproject.com/en/1.10/).
+[documentation](https://docs.djangoproject.com/en/3.0/).
 
 The `notif/settings.py` file will need particular attention. It contains
 domain names and the like, but also has site-specific secret values
@@ -38,7 +38,7 @@ Note that when running the code in production (with DEBUG turned off
 in the configuration file), it is necessary to move the static files
 to a separate location, normally hosted directly directly from a web
 server such as Apache or nginx. Refer to the Django
-[Deployment Checklist](https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/)
+[Deployment Checklist](https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/)
 for more information on putting the server into production.
 
 
