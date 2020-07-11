@@ -30,14 +30,15 @@ class Userext(models.Model):
         (AUTH_ENCRPASS, 'Encrypted password'),
         )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email_username = models.CharField(max_length=64)
-    email_server = models.CharField(max_length=64)
+    email_username = models.CharField(max_length=64, null=True)
+    email_server = models.CharField(max_length=64, null=True)
     email_port = models.IntegerField(default=587)
     email_authentication = models.IntegerField(choices=AUTH_CHOICES, default=AUTH_ENCRPASS)
     email_security = models.IntegerField(choices=SEC_CHOICES, default=SEC_STARTTLS)
-    twilio_sid = models.CharField(max_length=34)
-    twilio_token = models.CharField(max_length=34)
-    twilio_from = models.CharField(max_length=20)
+    twilio_sid = models.CharField(max_length=34, null=True)
+    twilio_token = models.CharField(max_length=34, null=True)
+    twilio_from = models.CharField(max_length=20, null=True)
+    #twitter_access_token and twitter_access_token_secret not currently used but in database
     count = models.IntegerField(default=0)
     latest = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -50,8 +51,8 @@ class Site(models.Model):
     twilio_sid = models.CharField(max_length=34, null=True) #Twilio info overridden by user info if present
     twilio_token = models.CharField(max_length=34, null=True)
     twilio_from = models.CharField(max_length=20, null=True)
-    twitter_consumer_key = models.CharField(max_length=25, null=True)
-    twitter_consumer_secret = models.CharField(max_length=50, null=True)
+    twitter_consumer_key = models.CharField(max_length=25, null=True) #Not currently used
+    twitter_consumer_secret = models.CharField(max_length=50, null=True) #Not currently used
 
     class Meta:
         db_table = "site"
