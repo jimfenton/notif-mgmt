@@ -3,7 +3,7 @@ nohup.out
 notif/*.pyc
 notif/settings.py
 mgmt/*.pyc
-notif/settings.py
+mgmt/settings.py
 mgmt/static/foundation
 *.pyc
 db.sqlite3

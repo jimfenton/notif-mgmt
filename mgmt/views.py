@@ -56,7 +56,7 @@ class MethodForm(ModelForm):
 
 @login_required
 def auth(request):
-    authorization_list = Authorization.objects.filter(user=request.user, deleted=False).order_by('description')
+    authorization_list = Authorization.objects.filter(user=request.user.id, deleted=False).order_by('description')
     template = loader.get_template('mgmt/auth.html')
     return HttpResponse(template.render({
         'page': 'auth',
@@ -155,7 +155,7 @@ def authcreate(request):
 
 def home(request):
     template = loader.get_template('mgmt/home.html')
-    return HttpResponse(template.render(request))
+    return HttpResponse(template.render({}, request))
 
 def dologout(request):
     logout(request)
@@ -209,10 +209,10 @@ def notifdetail(request, notID):
 @login_required
 def settings(request):
     try:
-        settings = Userext.objects.get(user=request.user)
+        settings = Userext.objects.get(user=request.user.id)
     except Userext.DoesNotExist:
 # Create a user settings record with default values
-        settings = Userext(user=request.user)
+        settings = Userext(user=request.user.id)
         settings.save()
 
     else:
@@ -244,7 +244,7 @@ def methods(request):
                 if 'id' in form.cleaned_data:
                     m = form.cleaned_data['id']
                     if (m==None):
-                        m = Method(user=request.user)
+                        m = Method(user=request.user.id)
                     m.active = form.cleaned_data['active']
                     m.name = form.cleaned_data['name']
                     m.type = form.cleaned_data['type']
@@ -257,7 +257,7 @@ def methods(request):
             return HttpResponseRedirect("methods")
 
     else:
-        formset = MethodFormSet(queryset=Method.objects.filter(user=request.user))
+        formset = MethodFormSet(queryset=Method.objects.filter(user=request.user.id))
 
     return render(request, 'mgmt/methods.html', { 'page': 'methods', 'formset': formset })
 
@@ -266,13 +266,13 @@ def rules(request):
     RuleFormSet = modelformset_factory(Rule, extra=1, exclude=('user',), can_delete = True)
     if (request.method == "POST"):
         formset = RuleFormSet(request.POST, initial=[
-            {'user': request.user,}])
+            {'user': request.user.id,}])
         if formset.is_valid():
             for form in formset:
                 if 'id' in form.cleaned_data:
                     r = form.cleaned_data['id']
                     if (r==None):
-                        r = Rule(user=request.user)
+                        r = Rule(user=request.user.id)
                     r.active = form.cleaned_data['active']
                     r.priority = form.cleaned_data['priority']
                     if r.priority == '':
@@ -283,6 +283,6 @@ def rules(request):
             return HttpResponseRedirect("rules")
 
     else:
-        formset = RuleFormSet(queryset=Rule.objects.filter(user=request.user))
+        formset = RuleFormSet(queryset=Rule.objects.filter(user=request.user.id))
 
     return render(request, 'mgmt/rules.html', { 'page': 'rules', 'formset': formset })

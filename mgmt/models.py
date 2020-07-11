@@ -29,7 +29,7 @@ class Userext(models.Model):
         (AUTH_PASS, 'Normal password'),
         (AUTH_ENCRPASS, 'Encrypted password'),
         )
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     email_username = models.CharField(max_length=64)
     email_server = models.CharField(max_length=64)
     email_port = models.IntegerField(default=587)
@@ -44,6 +44,17 @@ class Userext(models.Model):
 
     class Meta:
         db_table = "userext"
+
+class Site(models.Model):
+    site_id = models.IntegerField(default=1)   #For possible future expansion
+    twilio_sid = models.CharField(max_length=34, null=True) #Twilio info overridden by user info if present
+    twilio_token = models.CharField(max_length=34, null=True)
+    twilio_from = models.CharField(max_length=20, null=True)
+    twitter_consumer_key = models.CharField(max_length=25, null=True)
+    twitter_consumer_secret = models.CharField(max_length=50, null=True)
+
+    class Meta:
+        db_table = "site"
 
     
 
@@ -61,7 +72,7 @@ class Priority(models.Model):
 
 
 class Authorization(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=36, unique=True)
     domain = models.CharField(max_length=64)
     description = models.CharField(max_length=64)
@@ -80,7 +91,7 @@ class Authorization(models.Model):
         return self.address
 
 class Notification(models.Model):
-    userid = models.IntegerField(default=0)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
     toaddr = models.CharField(max_length=36)
     description = models.CharField(max_length=64)
     origtime = models.DateTimeField()
@@ -115,7 +126,7 @@ class Method(models.Model):
         (METHOD_VOICE, 'Phone call'),
         )
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     active = models.BooleanField(default=False)
     name = models.CharField(max_length=64, unique=True)
     type = models.IntegerField(choices=METHOD_CHOICES)
@@ -148,12 +159,12 @@ class Rule(models.Model):
         (PARAMETER_DOMAIN, 'Domain'),
         )
 
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
     active = models.BooleanField(default=False)
     priority = models.IntegerField(choices=Priority.PRIORITY_CHOICES, blank=True)
     domain = models.CharField(max_length=64, blank=True)
 # TODO: Make sure methods don't bleed from one user to another
-    method = models.ForeignKey(Method)
+    method = models.ForeignKey(Method, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "rule"
