@@ -244,7 +244,7 @@ def methods(request):
                 if 'id' in form.cleaned_data:
                     m = form.cleaned_data['id']
                     if (m==None):
-                        m = Method(user=request.user.id)
+                        m = Method(user=request.user)
                     m.active = form.cleaned_data['active']
                     m.name = form.cleaned_data['name']
                     m.type = form.cleaned_data['type']
