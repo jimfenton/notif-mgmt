@@ -1,6 +1,6 @@
 # views.py - Django views for notification management web interface
 #
-# Copyright (c) 2014, 2015, 2017 Jim Fenton
+# Copyright (c) 2014, 2015, 2017, 2020 Jim Fenton
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
@@ -26,7 +26,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.exceptions import SuspiciousOperation
 from django.db import models
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm, Textarea, formset_factory
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
@@ -35,6 +35,7 @@ from django.template import loader
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
+from mgmt.forms import make_rule_formset
 import uuid
 
 # TODO: Need a much better place to specify this!
@@ -236,7 +237,7 @@ def settings(request):
 
 @login_required
 def methods(request):
-    MethodFormSet = modelformset_factory(Method, extra=1, exclude=('user',), can_delete = True)
+    MethodFormSet = modelformset_factory(Method, extra=1, exclude=('user',), can_delete=True)
     if (request.method == "POST"):
         formset = MethodFormSet(request.POST)
         if formset.is_valid():
@@ -263,10 +264,11 @@ def methods(request):
 
 @login_required
 def rules(request):
-    RuleFormSet = modelformset_factory(Rule, extra=1, exclude=('user',), can_delete = True)
+
+    RuleFormSet = make_rule_formset(request.user.id)
+
     if (request.method == "POST"):
-        formset = RuleFormSet(request.POST, initial=[
-            {'user': request.user.id,}])
+        formset = RuleFormSet(request.POST, initial=[{'user': request.user.id,}])
         if formset.is_valid():
             for form in formset:
                 if 'id' in form.cleaned_data:
