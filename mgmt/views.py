@@ -35,25 +35,11 @@ from django.template import loader
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
-from mgmt.forms import make_rule_formset
+from mgmt.forms import make_rule_formset, MethodForm, SettingsForm
 import uuid
 
 # TODO: Need a much better place to specify this!
 NOTIF_HOST = "altmode.net:5342"
-
-class SettingsForm(ModelForm):
-    class Meta:
-        model = Userext
-        widgets = {
-            'twilio_token': forms.PasswordInput(render_value=True),
-            }
-        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token', 'twilio_from']
-
-class MethodForm(ModelForm):
-    class Meta:
-        model = Method
-        fields = ['active', 'name', 'type', 'address', 'preamble',]
-                
 
 @login_required
 def auth(request):
@@ -164,7 +150,7 @@ def dologout(request):
     
 @login_required
 def notif(request):
-    notification_list = Notification.objects.exclude(read=True).order_by('priority')
+    notification_list = Notification.objects.filter(user=request.user.id).exclude(read=True).order_by('priority')
     # above will add .filter(username=request.user.username)
     template = loader.get_template('mgmt/notif.html')
     return HttpResponse(template.render({
@@ -175,7 +161,7 @@ def notif(request):
 
 @login_required
 def notifall(request):
-    notification_list = Notification.objects.order_by('priority')
+    notification_list = Notification.objects.filter(user=request.user.id).order_by('priority')
     # above will add .filter(username=request.user.username)
     template = loader.get_template('mgmt/notifall.html')
     return HttpResponse(template.render({

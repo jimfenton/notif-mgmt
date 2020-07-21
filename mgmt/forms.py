@@ -20,10 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-from mgmt.models import Method, Rule
+from mgmt.models import Method, Rule, Userext
 from django import forms
-from django.forms.models import modelformset_factory
+from django.forms.models import modelformset_factory, ModelForm
 
+class SettingsForm(ModelForm):
+    class Meta:
+        model = Userext
+        widgets = {
+            'twilio_token': forms.PasswordInput(render_value=True),
+            }
+        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token', 'twilio_from']
+
+class MethodForm(ModelForm):
+    class Meta:
+        model = Method
+        fields = ['active', 'name', 'type', 'address', 'preamble',]
+                
 class RuleMethodField(forms.ModelChoiceField):
 	def label_from_instance(self, obj):
 		return obj.name
