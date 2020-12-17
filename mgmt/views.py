@@ -37,6 +37,7 @@ from django.views.decorators.csrf import csrf_exempt
 from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
 from mgmt.forms import make_rule_formset, MethodForm, SettingsForm
 import uuid
+import urllib.request, json
 
 # TODO: Need a much better place to specify this!
 NOTIF_HOST = "altmode.net:5342"
@@ -87,38 +88,32 @@ def authupdate(request, address):
         return a
 
 @login_required
-@csrf_exempt
 def authorize(request):
-    name = ""
-    domain = ""
-    maxpri = 3
-    redirect = ""
 
-    if (request.method == "POST"):
-        if "name" in request.POST:
-            name = request.POST['name']
-        if "maxpri" in request.POST:
-            maxpri = request.POST['maxpri']
-        if "domain" not in request.POST:
-            raise SuspiciousOperation
-        domain = request.POST['domain']
-        if "redirect" not in request.POST:
-            raise SuspiciousOperation
-        redirect = request.POST['redirect']
+    return render(request,'mgmt/authorize.html')
+
+@login_required
+def authcfm(request):
+    try:
+        url = request.POST['url']
+        with urllib.request.urlopen(url) as u:
+            data = json.loads(u.read().decode())
+    except:
+        return render(request, 'mgmt/authorize.html', { 'error': 'Bad URL'})
 
     return render(request,'mgmt/authnew.html', {
             'page': 'auth',
-            'name': name,
-            'domain': domain,
-            'maxpri': int(maxpri),
-            'redirect': redirect,
+            'name': data['name'],
+            'domain': data['domain'],
+            'maxpri': int(data['maxpri']),
+            'redirect': data['sendto'],
             'priority_choices': Priority.PRIORITY_CHOICES })
 
 
 @login_required
 def authcreate(request):
     try:
-        name = request.POST['description']
+        name = request.POST['name']
         domain = request.POST['domain']
         maxpri = request.POST['maxpri']
     except (KeyError):

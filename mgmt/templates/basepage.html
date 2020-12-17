@@ -35,14 +35,19 @@
 </ul>
 
 <ul class="left">
-  <li{% if page == 'notif' %} class="active"{% endif %}><a href="{% url 'notif' %}">Notifications</a></li>
-  <li{% if page == 'auth' %} class="active"{% endif %}><a href="{% url 'auth' %}">Authorizations</a></li>
+  <li {% if page == 'notif' %} class="active"{% endif %}><a href="{% url 'notif' %}">Notices</a></li>
+  <li class="has-dropdown"><a href="#">Authorizations</a>
+  <ul class="dropdown">
+    <li {% if page == 'auth' %} class="active"{% endif %}><a href="{% url 'auth' %}">Current</a></li>
+    <li {% if page == 'authorize' %} class="active"{% endif %}><a href="{% url 'authorize' %}">New</a></li>
+  </ul></li>
+
   <li class="has-dropdown"><a href="#">Alerts</a>
   <ul class="dropdown">
-    <li{% if page == 'rules' %} class="active"{% endif %}><a href="{% url 'rules' %}">Rules</a></li>
-    <li{% if page == 'methods' %} class="active"{% endif %}><a href="{% url 'methods' %}">Methods</a></li>
+    <li {% if page == 'rules' %} class="active"{% endif %}><a href="{% url 'rules' %}">Rules</a></li>
+    <li {% if page == 'methods' %} class="active"{% endif %}><a href="{% url 'methods' %}">Methods</a></li>
     </ul></li>
-  <li{% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">Settings</a></li>
+  <li {% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">Settings</a></li>
 </ul>
 </section>
 {% endif %}
