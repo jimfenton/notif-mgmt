@@ -22,7 +22,7 @@
 #
 
 from django import forms
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import logout
 from django.core.exceptions import SuspiciousOperation
 from django.db import models
@@ -34,13 +34,37 @@ from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule
+from mgmt.models import Authorization, Priority, Notification, Userext, Method, Rule, Site
 from mgmt.forms import make_rule_formset, MethodForm, SettingsForm
 import uuid
 import urllib.request, json
 
 # TODO: Need a much better place to specify this!
 NOTIF_HOST = "altmode.net:5342"
+
+class SettingsForm(ModelForm):
+    class Meta:
+        model = Userext
+        widgets = {
+            'twilio_token': forms.PasswordInput(render_value=True),
+            'twitter_api_secret': forms.PasswordInput(render_value=True),
+            }
+        fields = ['email_username', 'email_server', 'email_port', 'email_authentication', 'email_security', 'twilio_sid', 'twilio_token', 'twilio_from']
+
+class SiteForm(ModelForm):
+    class Meta:
+        model = Site
+        widgets = {
+            'twilio_token': forms.PasswordInput(render_value=True),
+            'twitter_consumer_secret': forms.PasswordInput(render_value=True),
+            }
+        fields = ['twilio_sid', 'twilio_token', 'twilio_from']
+
+class MethodForm(ModelForm):
+    class Meta:
+        model = Method
+        fields = ['active', 'name', 'type', 'address', 'preamble',]
+                
 
 @login_required
 def auth(request):
@@ -215,6 +239,33 @@ def settings(request):
 
     form = SettingsForm(instance=settings)
     return render(request, 'mgmt/settings.html', { 'page': 'settings', 'form': form, 'settings': settings })
+
+@login_required
+@permission_required('user.is_staff', raise_exception=True)
+def sitesettings(request):
+    try:
+        settings = Site.objects.get(site_id = 1)
+    except Site.DoesNotExist:
+# Create a site settings record. Should only happen at first startup
+        settings = Site()
+        settings.save()
+
+
+    else:
+        if (request.method == "POST"):
+
+            form = SiteForm(request.POST)
+            if form.is_valid():
+                settings.twilio_sid = form.cleaned_data['twilio_sid']
+                settings.twilio_token = form.cleaned_data['twilio_token']
+                settings.twilio_from = form.cleaned_data['twilio_from']
+                settings.twitter_consumer_key = form.cleaned_data['twitter_consumer_key']
+                settings.twitter_consumer_secret = form.cleaned_data['twitter_consumer_secret']
+                settings.save()
+            return HttpResponseRedirect("/sitesettings")
+
+    form = SiteForm(instance=settings)
+    return render(request, 'mgmt/sitesettings.html', { 'page': 'sitesettings', 'form': form })
 
 @login_required
 def methods(request):

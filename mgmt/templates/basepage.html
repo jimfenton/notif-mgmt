@@ -47,7 +47,17 @@
     <li {% if page == 'rules' %} class="active"{% endif %}><a href="{% url 'rules' %}">Rules</a></li>
     <li {% if page == 'methods' %} class="active"{% endif %}><a href="{% url 'methods' %}">Methods</a></li>
     </ul></li>
+
+  {% if user.is_staff %}
+  <li class="has-dropdown"><a href="#">Settings</a>
+  <ul class="dropdown">
+    <li {% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">User</a></li>
+    <li {% if page == 'sitesettings' %} class="active"{% endif %}><a
+    href="{% url 'sitesettings' %}">Site</a></li>
+  </ul></li>
+  {% else %}
   <li {% if page == 'settings' %} class="active"{% endif %}><a href="{% url 'settings' %}">Settings</a></li>
+  {% endif %}
 </ul>
 </section>
 {% endif %}
