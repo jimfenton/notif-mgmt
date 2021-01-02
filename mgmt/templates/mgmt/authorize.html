@@ -15,4 +15,10 @@
 <input type="submit" class="small button" value="Get">
 </form>
 
+{% if error %}
+<span class="alert label">
+  {{ error }}
+</span>
+{% endif %}
+
 {% endblock %}

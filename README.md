@@ -15,7 +15,7 @@ The `notif-mgmt` code uses and has been tested with:
 * Python 3.7.3
 * Django 3.0.7
 * PostgreSQL 11.7
-* ZURB [Foundation](http://foundation.zurb.com/) (version uncertain)
+* ZURB [Foundation](https://get.foundation/) 5.5.1
 
 ## Caveats
 
@@ -28,7 +28,7 @@ authorizations, etc.) are thought to be incomplete.
 
 It is assumed that you have some familiarity with Django application
 structure; if not, please refer to the
-[documentation](https://docs.djangoproject.com/en/1.10/).
+[documentation](https://docs.djangoproject.com/en/3.0/).
 
 The `notif/settings.py` file will need particular attention. It contains
 domain names and the like, but also has site-specific secret values

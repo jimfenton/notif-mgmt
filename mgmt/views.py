@@ -123,15 +123,18 @@ def authcfm(request):
         with urllib.request.urlopen(url) as u:
             data = json.loads(u.read().decode())
     except:
-        return render(request, 'mgmt/authorize.html', { 'error': 'Bad URL'})
+        return render(request, 'mgmt/authorize.html', {'error': 'Error: Invalid authorization URL'})
 
-    return render(request,'mgmt/authnew.html', {
+    try:
+        return render(request,'mgmt/authnew.html', {
             'page': 'auth',
             'name': data['name'],
             'domain': data['domain'],
             'maxpri': int(data['maxpri']),
             'redirect': data['sendto'],
             'priority_choices': Priority.PRIORITY_CHOICES })
+    except:
+        return render(request, 'mgmt/authorize.html', {'error': 'Error: Authorization parameter syntax error'})
 
 
 @login_required
